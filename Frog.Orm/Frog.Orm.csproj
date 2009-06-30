@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{09D00F68-135B-47C5-8B97-0F92C964CA1C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Frog.Orm</RootNamespace>
+    <AssemblyName>Frog.Orm</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.61.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\System.Data.SQLite.DLL</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Conditions\AndCondition.cs" />
+    <Compile Include="Conditions\ColumnCondition.cs" />
+    <Compile Include="Conditions\ContainsCondition.cs" />
+    <Compile Include="Conditions\OrCondition.cs" />
+    <Compile Include="Conditions\LessThanCondition.cs" />
+    <Compile Include="Conditions\GreaterThanCondition.cs" />
+    <Compile Include="Conditions\EndsWithCondition.cs" />
+    <Compile Include="Conditions\StartsWithCondition.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="SqlServerConnection.cs" />
+    <Compile Include="MappingException.cs" />
+    <Compile Include="Dialects\ISqlDialect.cs" />
+    <Compile Include="Dialects\SqlDialectBase.cs" />
+    <Compile Include="SqliteConnection.cs" />
+    <Compile Include="DataEnumerator.cs" />
+    <Compile Include="ColumnAttribute.cs" />
+    <Compile Include="Conditions\EqualsCondition.cs" />
+    <Compile Include="Conditions\Field.cs" />
+    <Compile Include="IConnection.cs" />
+    <Compile Include="Conditions\ICondition.cs" />
+    <Compile Include="IDataEnumerator.cs" />
+    <Compile Include="JustInTimeDataReader.cs" />
+    <Compile Include="InvalidRowCountException.cs" />
+    <Compile Include="IRepository.cs" />
+    <Compile Include="ITransaction.cs" />
+    <Compile Include="Dialects\TransactSqlDialect.cs" />
+    <Compile Include="MappedColumnInfo.cs" />
+    <Compile Include="MappedTypeInfo.cs" />
+    <Compile Include="PrimaryKeyAttribute.cs" />
+    <Compile Include="Repository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RequiredDependencyAttribute.cs" />
+    <Compile Include="Dialects\SqliteDialect.cs" />
+    <Compile Include="TableAttribute.cs" />
+    <Compile Include="Transaction.cs" />
+    <Compile Include="TypeMapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Features.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

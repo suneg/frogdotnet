@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" name="Syntase Wizer" default="build" basedir=".">
+  <description>Syntase Wizer Project</description>
+  <property name="debug" value="true" overwrite="false" />
+  <property name="nant.settings.currentframework" value="net-3.5"/>
+  <property name="target.architecture" value="x86"/>
+
+  <target name="clean" description="remove all generated files">
+    <delete failonerror="false">
+      <fileset>
+        <include name="Drop\*.dll" />
+        <include name="Drop\*.pdb" />
+        <include name="Drop\*.exe" />
+        <include name="Drop\*.config" />
+        <include name="Drop\*.xml" />
+        <include name="Drop\*.cmd" />
+        <include name="Drop\*.log" />
+        <include name="Drop\*.zip" />
+      </fileset>
+    </delete>
+  </target>
+  
+  <target name="build">
+    <mkdir dir="Drop" />
+
+    <copy todir="Drop">
+      <fileset basedir="Lib">
+        <include name="*.dll" />
+        <exclude name="System.Data.SQLite.dll" />
+      </fileset>
+    </copy>
+
+    <if test="${target.architecture=='x64'}">
+      <copy todir="Drop">
+        <fileset basedir="Lib\x64">
+          <include name="System.Data.SQLite.dll" />
+        </fileset>
+      </copy>
+    </if>
+    <if test="${target.architecture=='x86'}">
+      <copy todir="Drop">
+        <fileset basedir="Lib">
+          <include name="System.Data.SQLite.dll" />
+        </fileset>
+      </copy>
+    </if>
+
+
+    <csc target="library" output="Drop\Frog.Orm.dll" debug="${debug}" keyfile="frog.snk">
+      <references>
+        <include name="Lib\log4net.dll" />
+        <include name="Drop\System.Data.SQLite.dll" />
+      </references>
+      <sources>
+        <include name="Frog.Orm\**.cs" />
+      </sources>
+    </csc>
+
+    <csc target="library" output="Drop\Frog.Orm.Test.dll" debug="${debug}">
+      <references>
+        <include name="Drop\log4net.dll" />
+        <include name="Drop\nunit.framework.dll" />
+        <include name="Drop\Rhino.Mocks.dll" />
+        <include name="Drop\Frog.Orm.dll" />
+        <include name="Drop\System.Data.SQLite.dll" />
+      </references>
+      <sources>
+        <include name="Frog.Orm.Test\**.cs" />
+      </sources>
+    </csc>
+  </target>
+
+  <target name="test">
+    <nunit2 verbose="true" failonerror="true">
+      <formatter type="Plain" />
+      <test assemblyname="Drop\Frog.Orm.Test.dll"/>
+    </nunit2>
+  </target>
+
+  <target name="createzip" depends="build, test">
+    <zip zipfile="Drop\frog.dll.zip">
+      <fileset basedir="Drop" prefix="bin">
+        <include name="**/*.dll" />
+        <include name="**/*.config" />
+      </fileset>
+      <fileset basedir="Documentation" prefix="doc">
+        <include name="**/*" />
+      </fileset>
+    </zip>
+
+    <zip zipfile="Drop\frog.src.zip">
+      <fileset basedir=".">
+        <include name="**/*.css" />
+        <include name="**/*.htm" />
+        <include name="**/*.jpg" />
+        <include name="**/*.cs" />
+        <include name="**/*.csproj" />
+        <include name="**/*.config" />
+        <include name="**/*.sln" />
+        <include name="Lib/*.dll" />
+        <include name="**/*.txt" />
+        <include name="**/*.build" />
+      </fileset>
+    </zip>
+  </target>
+</project>

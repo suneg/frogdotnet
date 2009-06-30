@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Frog.NET</title>
+        
+        <link rel="Stylesheet" href="style.css" type="text/css" />
+    </head>
+
+    <body>
+        <table class="navbar">
+            <tr>
+                <td>Frog.NET</td>
+                <td align="right">v0.1</td>
+            </tr>
+        </table>
+        
+        <div id="logoContainer"><img src="frog.jpg" id="logo" /></div>
+
+        <div id="mainText">
+            <br />
+            <a href="Index.htm">Home</a>
+            
+            <h1>Logging</h1>
+            
+            Frog.NET has built-in support for logging of SQL commands based on the <a href="http://logging.apache.org/log4net/index.html" target="_blank">log4net</a> framework. Just<br /> add a log4net
+            configuration section to your app.config/web.config file.<br />
+            
+            <!-- code formatted by http://manoli.net/csharpformat/ -->
+            <div class="csharpcode">
+            <pre><span class="lnum">   1:  </span><span class="kwrd">&lt;?</span><span class="html">xml</span> <span class="attr">version</span><span class="kwrd">="1.0"</span> <span class="attr">encoding</span><span class="kwrd">="utf-8"</span> ?<span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">   2:  </span><span class="kwrd">&lt;</span><span class="html">configuration</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">   3:  </span>  <span class="kwrd">&lt;</span><span class="html">configSections</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">   4:  </span>    <span class="kwrd">&lt;</span><span class="html">section</span> <span class="attr">name</span><span class="kwrd">="log4net"</span> <span class="attr">type</span><span class="kwrd">="log4net.Config.Log4NetConfigurationSectionHandler, log4net"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">   5:  </span>  <span class="kwrd">&lt;/</span><span class="html">configSections</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">   6:  </span>&nbsp;</pre>
+            <pre><span class="lnum">   7:  </span>  <span class="kwrd">&lt;</span><span class="html">log4net</span> <span class="attr">debug</span><span class="kwrd">="true"</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">   8:  </span>    <span class="kwrd">&lt;</span><span class="html">appender</span> <span class="attr">name</span><span class="kwrd">="RollingLogFileAppender"</span> <span class="attr">type</span><span class="kwrd">="log4net.Appender.RollingFileAppender"</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">   9:  </span>      <span class="kwrd">&lt;</span><span class="html">file</span> <span class="attr">value</span><span class="kwrd">="C:\\temp\\TestLog.txt"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  10:  </span>      <span class="kwrd">&lt;</span><span class="html">appendToFile</span> <span class="attr">value</span><span class="kwrd">="true"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  11:  </span>      <span class="kwrd">&lt;</span><span class="html">rollingStyle</span> <span class="attr">value</span><span class="kwrd">="Size"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  12:  </span>      <span class="kwrd">&lt;</span><span class="html">maxSizeRollBackups</span> <span class="attr">value</span><span class="kwrd">="10"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  13:  </span>      <span class="kwrd">&lt;</span><span class="html">maximumFileSize</span> <span class="attr">value</span><span class="kwrd">="10MB"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  14:  </span>      <span class="kwrd">&lt;</span><span class="html">staticLogFileName</span> <span class="attr">value</span><span class="kwrd">="true"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  15:  </span>      <span class="kwrd">&lt;</span><span class="html">layout</span> <span class="attr">type</span><span class="kwrd">="log4net.Layout.PatternLayout"</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">  16:  </span>        <span class="kwrd">&lt;</span><span class="html">conversionPattern</span> <span class="attr">value</span><span class="kwrd">="%-5p %d %5rms %-22.22c{1} %-18.18M - %m%n"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  17:  </span>      <span class="kwrd">&lt;/</span><span class="html">layout</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">  18:  </span>    <span class="kwrd">&lt;/</span><span class="html">appender</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">  19:  </span>&nbsp;</pre>
+            <pre><span class="lnum">  20:  </span>    <span class="kwrd">&lt;</span><span class="html">root</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">  21:  </span>      <span class="kwrd">&lt;</span><span class="html">level</span> <span class="attr">value</span><span class="kwrd">="DEBUG"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  22:  </span>      <span class="kwrd">&lt;</span><span class="html">appender-ref</span> <span class="attr">ref</span><span class="kwrd">="RollingLogFileAppender"</span> <span class="kwrd">/&gt;</span></pre>
+            <pre><span class="lnum">  23:  </span>    <span class="kwrd">&lt;/</span><span class="html">root</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">  24:  </span>  <span class="kwrd">&lt;/</span><span class="html">log4net</span><span class="kwrd">&gt;</span></pre>
+            <pre><span class="lnum">  25:  </span><span class="kwrd">&lt;/</span><span class="html">configuration</span><span class="kwrd">&gt;</span></pre>
+            </div>
+            
+            Don't forget to initialize the logging configuration in your application startup code.
+            
+            <!-- code formatted by http://manoli.net/csharpformat/ -->
+            <div class="csharpcode">
+            <pre><span class="lnum">   1:  </span>Configuration.Initialize("MyApplication.exe.config");</pre>
+            </div>
+
+        </div>
+        
+        <div class="footer">
+        Frog.NET 
+        </div>
+    </body>
+</html>

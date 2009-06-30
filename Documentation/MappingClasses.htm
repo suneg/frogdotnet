@@ -1,0 +1,115 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Frog.NET</title>
+        
+        <link rel="Stylesheet" href="style.css" type="text/css" />
+    </head>
+
+    <body>
+        <table class="navbar">
+            <tr>
+                <td>Frog.NET</td>
+                <td align="right">v0.1</td>
+            </tr>
+        </table>
+        
+        <div id="logoContainer"><img src="frog.jpg" id="logo" /></div>
+
+        <div id="mainText">
+            <br />
+            <a href="Index.htm">Home</a>
+            
+            <h1>Mapping Classes</h1>
+            
+            <h3>Introduction</h3>
+            Mapping classes are classes annotated with the Frog.NET class annotations [Table]. They are <br />
+            object representations of any database output. For instance you would want to map the result<br />
+            of "SELECT * FROM Users" into a list of User instances.
+            
+            <!-- code formatted by http://manoli.net/csharpformat/ -->
+            <div class="csharpcode">
+            <pre><span class="lnum">   1:  </span>[Table]</pre>
+            <pre><span class="lnum">   2:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> User</pre>
+            <pre><span class="lnum">   3:  </span>{</pre>
+            <pre><span class="lnum">   4:  </span>     [PrimaryKey]</pre>
+            <pre><span class="lnum">   5:  </span>     <span class="kwrd">public</span> <span class="kwrd">long</span> Id { get; set; }</pre>
+            <pre><span class="lnum">   6:  </span>     </pre>
+            <pre><span class="lnum">   7:  </span>     [Column]</pre>
+            <pre><span class="lnum">   8:  </span>     <span class="kwrd">public</span> <span class="kwrd">string</span> Name { get; set; }</pre>
+            <pre><span class="lnum">   9:  </span>}</pre>
+            </div>
+                
+            There need not to be a complete match between what columns are available in a table, and your mapping definitions. In fact, your mapping classes are just telling the database what columns are needed
+            for filling the objects. So if the user table has a Password column and a Birthday column in addition to the Name and Id column shown above, they will not be fetched in with this User mapping class.<br />
+            <br />
+            Attempting to fetch a database row, and map it to the User class defined above will produce the following SQL command: "SELECT [Id],[Name] FROM [User]"<br />
+            <br />
+            Mapping classes are usually used to fetch from database tables, but they can instead be using database views, in which case they will only work for read-only scenarios.
+            While in most situations you want your mapping class to be named like your table (or view), you can override this default behaviour by setting the Name parameter of the [Table] attribute.<br />
+            <br />
+            With name overriding you also have the option of using two or more different mapping classes for the same table (or view).
+            
+            <!-- code formatted by http://manoli.net/csharpformat/ -->
+            <div class="csharpcode">
+            <pre><span class="lnum">   1:  </span>[Table(Name="User")]</pre>
+            <pre><span class="lnum">   2:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> UserSimple</pre>
+            <pre><span class="lnum">   3:  </span>{</pre>
+            <pre><span class="lnum">   4:  </span>    [PrimaryKey]</pre>
+            <pre><span class="lnum">   5:  </span>    <span class="kwrd">public</span> <span class="kwrd">long</span> Id { get; set; }</pre>
+            <pre><span class="lnum">   6:  </span>    </pre>
+            <pre><span class="lnum">   7:  </span>    [Column]</pre>
+            <pre><span class="lnum">   8:  </span>    <span class="kwrd">public</span> <span class="kwrd">string</span> Name { get; set;</pre>
+            <pre><span class="lnum">   9:  </span>}</pre>
+            <pre><span class="lnum">  10:  </span></pre>
+            <pre><span class="lnum">  11:  </span>[Table(Name="User)]</pre>
+            <pre><span class="lnum">  12:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> FullUserInformation</pre>
+            <pre><span class="lnum">  13:  </span>{</pre>
+            <pre><span class="lnum">  14:  </span>    [PrimaryKey]</pre>
+            <pre><span class="lnum">  15:  </span>    <span class="kwrd">public</span> <span class="kwrd">long</span> Id { get; set; }</pre>
+            <pre><span class="lnum">  16:  </span>    </pre>
+            <pre><span class="lnum">  17:  </span>    [Column]</pre>
+            <pre><span class="lnum">  18:  </span>    <span class="kwrd">public</span> <span class="kwrd">string</span> Name { get; set;</pre>
+            <pre><span class="lnum">  19:  </span>    </pre>
+            <pre><span class="lnum">  20:  </span>    [DateTime]</pre>
+            <pre><span class="lnum">  21:  </span>    <span class="kwrd">public</span> DateTime Birthday { get; set; }</pre>
+            <pre><span class="lnum">  22:  </span>}</pre>
+            </div>
+        
+            Using the two classes above will fetch data from the same table, but FullUserInformation will also extract the Birthday column, where using UserSimple will not.
+        
+            <h3>Entities with Children</h3>
+            In the world of databases you often come across one-to-many releations.  Naturally most applications depends on this relational data, and not just simple 
+            data types. To accomodate this you can use the [RequiredDependency] attribute on you mapping classes. This allows you to implement <i>late-fetching</i> of 
+            data rows, when the application requires it. Note that Frog.NET does NOT magically load a full object graph like other O/R mappers - Instead 
+            you have to implement just-in-time fetching like in the example below. The [RequiredDependency] attribute instructs the framework to provide a base 
+            Repository upon the initialization of the object<br />
+            
+            <!-- code formatted by http://manoli.net/csharpformat/ -->
+            <div class="csharpcode">
+            <pre><span class="lnum">   1:  </span>[Table]</pre>
+            <pre><span class="lnum">   2:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> Person</pre>
+            <pre><span class="lnum">   3:  </span>{</pre>
+            <pre><span class="lnum">   4:  </span>    [PrimaryKey]</pre>
+            <pre><span class="lnum">   5:  </span>    <span class="kwrd">public</span> <span class="kwrd">long</span> Id { get; set; }</pre>
+            <pre><span class="lnum">   6:  </span>    </pre>
+            <pre><span class="lnum">   7:  </span>    [RequiredDependency]</pre>
+            <pre><span class="lnum">   8:  </span>    <span class="kwrd">public</span> IRepository Repository { get; set; }</pre>
+            <pre><span class="lnum">   9:  </span>    </pre>
+            <pre><span class="lnum">  10:  </span>    [Column]</pre>
+            <pre><span class="lnum">  11:  </span>    <span class="kwrd">public</span> IList&lt;Child&gt; Children </pre>
+            <pre><span class="lnum">  12:  </span>    {</pre>
+            <pre><span class="lnum">  13:  </span>        var result = Repository.GetWhere&lt;Child&gt;(Expression.Equals(<span class="str">"ParentId"</span>, <span class="kwrd">this</span>.Id);</pre>
+            <pre><span class="lnum">  14:  </span>        <span class="kwrd">return</span> result.ToList();</pre>
+            <pre><span class="lnum">  15:  </span>    }</pre>
+            <pre><span class="lnum">  16:  </span>}</pre>
+            </div>
+            
+            As the example above indicates, you should never (due to performance) iterate over a list of persons and call Children property. If your application should need to fetch all children, you could instead
+            implement a GetAllChildren() method on a <a href="Repositories.htm#CustomRepositories">PersonRepository</a>.
+        </div>
+        
+        <div class="footer">
+        Frog.NET 
+        </div>
+    </body>
+</html>
