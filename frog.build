@@ -78,13 +78,16 @@
   </target>
 
   <target name="createzip" depends="build, test">
-    <zip zipfile="Drop\frog.dll.zip">
+    <zip zipfile="Drop\frogdotnet.zip">
       <fileset basedir="Drop" prefix="bin">
-        <include name="**/*.dll" />
-        <include name="**/*.config" />
+        <include name="**/Frog.Orm.dll" />
+        <include name="**/log4net.dll" />
       </fileset>
       <fileset basedir="Documentation" prefix="doc">
         <include name="**/*" />
+      </fileset>
+      <fileset basedir=".">
+        <include name="license.txt" />
       </fileset>
     </zip>
 
