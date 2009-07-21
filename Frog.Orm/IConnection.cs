@@ -4,7 +4,7 @@ namespace Frog.Orm
 {
     public interface IConnection : IDisposable
     {
-        ITransaction BeginTransaction();
+        ITransaction GetTransaction();
         DataEnumerator DataEnumerator { get; set; }
     }
 }

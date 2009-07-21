@@ -26,7 +26,7 @@ namespace Frog.Orm
             connection.Dispose();
         }
 
-        public ITransaction BeginTransaction()
+        public ITransaction GetTransaction()
         {
             if(connection.State != ConnectionState.Open)
                 connection.Open();

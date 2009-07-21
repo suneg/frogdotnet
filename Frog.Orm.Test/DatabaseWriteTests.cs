@@ -24,6 +24,23 @@ namespace Frog.Orm.Test
         }
 
         [Test]
+        public void UseMultipleRepositoriesWithSingleConnection()
+        {
+            var entity1 = new Entity {Text = "Hello World" };
+            var entity2 = new Entity {Text = "Hello World" };
+
+            var repository1 = new Repository(connection);
+            var repository2 = new Repository(connection);
+
+
+            repository1.Create(entity1);
+            repository1.Create(entity2);
+
+            repository1.CommitChanges();
+            repository2.CommitChanges();
+        }
+
+        [Test]
         public void UpdateInstance()
         {
             var entity = new Entity();

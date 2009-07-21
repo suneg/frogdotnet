@@ -107,7 +107,7 @@ namespace Frog.Orm
             get
             {
                 if(transaction == null)
-                    transaction = connection.BeginTransaction();
+                    transaction = connection.GetTransaction();
 
                 return transaction;
             }
