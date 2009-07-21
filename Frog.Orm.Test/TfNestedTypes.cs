@@ -51,8 +51,9 @@ namespace Frog.Orm.Test
         [Test]
         public void GetOrderAndOrderlines()
         {
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 var order = repository.Get<Order>(1);
 
                 Assert.That(order.Orderlines.Count(), NUnit.Framework.SyntaxHelpers.Is.EqualTo(2));

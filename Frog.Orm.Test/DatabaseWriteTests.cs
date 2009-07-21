@@ -13,10 +13,11 @@ namespace Frog.Orm.Test
         {
             var entity = new Entity {Text = "hello world"};
 
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 var returnedObject = repository.Create(entity);
-                repository.CommitChanges();
+                connection.CommitChanges();
 
                 var storedEntity = repository.Get<Entity>(returnedObject.Id);
                 Assert.That(storedEntity.Text, Is.EqualTo("hello world"));
@@ -24,36 +25,20 @@ namespace Frog.Orm.Test
         }
 
         [Test]
-        public void UseMultipleRepositoriesWithSingleConnection()
-        {
-            var entity1 = new Entity {Text = "Hello World" };
-            var entity2 = new Entity {Text = "Hello World" };
-
-            var repository1 = new Repository(connection);
-            var repository2 = new Repository(connection);
-
-
-            repository1.Create(entity1);
-            repository1.Create(entity2);
-
-            repository1.CommitChanges();
-            repository2.CommitChanges();
-        }
-
-        [Test]
         public void UpdateInstance()
         {
             var entity = new Entity();
 
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 entity = repository.Create(entity);
-                repository.CommitChanges();
+                connection.CommitChanges();
 
                 entity.Text = "hello everyone";
 
                 repository.Update(entity);
-                repository.CommitChanges();
+                connection.CommitChanges();
 
                 var updatedObject = repository.Get<Entity>(entity.Id);
                 Assert.That(updatedObject.Text, Is.EqualTo("hello everyone"));
@@ -65,10 +50,11 @@ namespace Frog.Orm.Test
         {
             var entity = new Entity();
 
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 entity = repository.Create(entity);
-                repository.CommitChanges();
+                connection.CommitChanges();
                 Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
 
                 repository.Remove(entity);
@@ -79,8 +65,9 @@ namespace Frog.Orm.Test
         [Test]
         public void StoreTypeWithEnum()
         {
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 var entity = new TypeWithEnumMember();
                 entity.ActualEnumValue = SampleEnum.B;
 
@@ -96,8 +83,9 @@ namespace Frog.Orm.Test
         [Test]
         public void StoreTypeWithBoolean()
         {
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 var entity = new TypeWithBoolean();
                 entity.FirstBooleanValue = true;
                 entity.LastBooleanValue = false;
@@ -118,15 +106,16 @@ namespace Frog.Orm.Test
         public void AttemptSqlInjectionWithApostropheDuringUpdate()
         {
             
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 var entity = new Entity();
                 entity = repository.Create(entity);
 
                 entity.Text = "hello' everyone";
 
                 repository.Update(entity);
-                repository.CommitChanges();
+                connection.CommitChanges();
 
                 var updatedObject = repository.Get<Entity>(entity.Id);
                 Assert.That(updatedObject.Text, Is.EqualTo("hello' everyone"));
@@ -137,13 +126,14 @@ namespace Frog.Orm.Test
         public void AttemptSqlInjectionWithApostropheDuringInsert()
         {
 
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 var entity = new Entity();
                 entity.Text = "hello' everyone";
                 entity = repository.Create(entity);
 
-                repository.CommitChanges();
+                connection.CommitChanges();
 
                 var updatedObject = repository.Get<Entity>(entity.Id);
                 Assert.That(updatedObject.Text, Is.EqualTo("hello' everyone"));

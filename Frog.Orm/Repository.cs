@@ -7,25 +7,11 @@ namespace Frog.Orm
     public class Repository : IRepository
     {
         private readonly IConnection connection;
-        private ITransaction transaction;
 
         public Repository(IConnection connection)
         {
             this.connection = connection;
             connection.DataEnumerator = new DataEnumerator(this);
-        }
-
-        /// <summary>
-        /// Disposes resources used by the repository, including the underlying database connection.
-        /// </summary>
-        public void Dispose()
-        {
-            if (transaction != null)
-            {
-                transaction.Rollback();        
-            }
-
-            connection.Dispose();
         }
 
         public T Get<T>(long primaryKeyValue)
@@ -78,15 +64,6 @@ namespace Frog.Orm
             return Transaction.GetWhere<T>(condition);
         }
 
-        /// <summary>
-        /// Commit changes in the repository to the underlying data source.
-        /// </summary>
-        public void CommitChanges()
-        {
-            Transaction.Commit();
-            transaction = null;
-        }
-
         public T Create<T>(T obj)
         {
             return Transaction.Create(obj);
@@ -106,10 +83,7 @@ namespace Frog.Orm
         {
             get
             {
-                if(transaction == null)
-                    transaction = connection.GetTransaction();
-
-                return transaction;
+                return connection.Transaction;
             }
         }
     }

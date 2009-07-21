@@ -35,7 +35,7 @@ namespace Frog.Orm.Test
             repository.Create(new Sample());
             repository.Create(new Sample());
 
-            repository.CommitChanges();
+            connection.CommitChanges();
         }
 
         private static DbConnection GetInMemorySqliteConnection()
@@ -49,8 +49,9 @@ namespace Frog.Orm.Test
         [Test]
         public void GetManyFromView()
         {
-            using (var repository = new TestRepository(connection))
+            using (connection)
             {
+                var repository = new TestRepository(connection);
                 var samples = repository.GetMany<Sample>("AllSamples", null);
                 Assert.That(samples.Count(), Is.EqualTo(3));
             }
@@ -59,8 +60,9 @@ namespace Frog.Orm.Test
         [Test]
         public void GetSingleFromView()
         {
-            using (var repository = new TestRepository(connection))
+            using (connection)
             {
+                var repository = new TestRepository(connection);
                 var sample = repository.GetSingle<Sample>("AllSamples", null);
                 Assert.That(sample.Id, Is.EqualTo(1));
             }

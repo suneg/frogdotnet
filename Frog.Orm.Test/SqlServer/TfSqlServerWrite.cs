@@ -37,6 +37,7 @@ namespace Frog.Orm.Test.SqlServer
             builder.RemoveTableFromType<TypeWithBoolean>();
 
             setupConnection.Close();
+            connection.Dispose();
         }
     }
 }

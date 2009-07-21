@@ -29,17 +29,15 @@ namespace Frog.Orm.Test.SqlServer
             builder.CreateTableFromType<TypeWithGuidPrimaryKey>();
             builder.CreateViewFromType<Sample>("AllSamples");
 
-            using (var repository = new Repository(new SqlServerConnection(connectionString)))
-            {
-                repository.Create(new Sample());
-                repository.Create(new Sample());
-                repository.Create(new Sample());
-
-                repository.Create(new TypeWithEnumMember {ActualEnumValue = SampleEnum.B});
-                repository.CommitChanges();
-            }
-
             connection = new SqlServerConnection(connectionString);
+
+            var repository = new Repository(connection);
+            repository.Create(new Sample());
+            repository.Create(new Sample());
+            repository.Create(new Sample());
+
+            repository.Create(new TypeWithEnumMember {ActualEnumValue = SampleEnum.B});
+            connection.CommitChanges();
         }
 
         [TearDown]
@@ -51,13 +49,15 @@ namespace Frog.Orm.Test.SqlServer
             builder.RemoveView("AllSamples");
 
             setupConnection.Close();
+            connection.Dispose();
         }
 
         [Test, Ignore("No support yet for GUID primary keys")]
         public void GetByGuidPrimaryKey()
         {
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 repository.Create(new TypeWithGuidPrimaryKey { PrimaryKey = new Guid("FE38313A-7B56-4b8a-A856-AB7346476DE1") });
 
                 var entity = repository.Get<TypeWithGuidPrimaryKey>(new Guid("FE38313A-7B56-4b8a-A856-AB7346476DE1"));

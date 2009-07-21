@@ -13,8 +13,9 @@ namespace Frog.Orm.Test
         [Test]
         public void GetByIntegerPrimaryKey()
         {
-            using(var repository = new Repository(connection))
+            using(connection)
             {
+                var repository = new Repository(connection);
                 var sample = repository.Get<Sample>(2);
                 Assert.That(sample.Id, Is.EqualTo(2));
             }
@@ -23,8 +24,9 @@ namespace Frog.Orm.Test
         [Test]
         public void GetAll()
         {
-            using(var repository = new Repository(connection))
+            using(connection)
             {
+                var repository = new Repository(connection);
                 var all = repository.GetAll<Sample>();
                 Assert.That(all.Count(), Is.EqualTo(3));
             }
@@ -33,8 +35,9 @@ namespace Frog.Orm.Test
         [Test, Description("Using JustInTimeDataReader. Designed to catch 'failed: System.InvalidOperationException : There is already an open DataReader associated with this Command which must be closed first.'")]
         public void GetAllButDontEnumerate()
         {
-            using (var repository = new Repository(connection))
+            using (connection)
             {
+                var repository = new Repository(connection);
                 var all = repository.GetAll<Sample>();
             }
         }
@@ -42,8 +45,9 @@ namespace Frog.Orm.Test
         [Test]
         public void FetchTwiceUsingSameTransaction()
         {
-            using(var repository = new Repository(connection))
+            using(connection)
             {
+                var repository = new Repository(connection);
                 repository.Get<Sample>(1);
                 repository.Get<Sample>(2);
             }
@@ -52,8 +56,9 @@ namespace Frog.Orm.Test
         [Test]
         public void GetWithSpecialCondition()
         {
-            using(var repository = new Repository(connection))
-            {                
+            using(connection)
+            {
+                var repository = new Repository(connection);
                 var samples = repository.GetWhere<Sample>(Field.Equals("Id", 3));
                 Assert.That(samples.Count(), Is.EqualTo(1));
             }
@@ -62,8 +67,9 @@ namespace Frog.Orm.Test
         [Test]
         public void GetTypeWithEnum()
         {
-            using(var repository = new Repository(connection))
+            using(connection)
             {
+                var repository = new Repository(connection);
                 var entities = repository.GetAll<TypeWithEnumMember>();
                 Assert.That(entities.First().ActualEnumValue, Is.EqualTo(SampleEnum.B));
             }
