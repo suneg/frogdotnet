@@ -43,6 +43,7 @@ namespace Frog.Orm
         public void Rollback()
         {
             currentTransaction.Rollback();   // TODO: Fail if no transaction is running
+            currentTransaction = null;
         }
 
         /// <summary>
@@ -54,6 +55,9 @@ namespace Frog.Orm
             currentTransaction = null;
         }
 
+        /// <summary>
+        /// Gets the currently active transaction. If none exists a new will be created.
+        /// </summary>
         public ITransaction Transaction
         {
             get
