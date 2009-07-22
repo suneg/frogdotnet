@@ -1,0 +1,53 @@
+﻿
+EarlierThanCondition
+LaterThanCondition
+NotCondition
+
+* Rename [Table(Name..] to [Entity(Source..]
+* Ability to mark mapping class as [ReadOnly] (cannot be used in insert, update or delete scenarios). [Entity(Table] vs. [ReadOnlyEntity(Source
+
+* Introduce DbDateTime class (with .Now, .Today, etc) for representing database time (as opposed to DateTime which is time on the application server)
+* Verify database against model (mapping classes) (maybe during initialization)
+
+* Support for INSERT INTO on Oracle. They use a different auto increment approach.
+
+* Support PrimaryKeys of type long (bigint), int32, and guids. Verify both with sql server
+* Fetching of GUID columns
+* Rename Connection to SqlServerConnection
+
+* Descriptive failures on mapping errors (like mapping string to int32)
+* UpdateWhere
+
+* DeleteAll
+* DeleteWhere / RemoveWhere
+* Row ordering. Where to put it? along conditionals?
+
+* Support for dynamic updates/inserts based on database functions, like getdate(). Scenario: CreatedDate and ModifiedDate on an entity.
+	- Ability to ignore fields in certain insert and update scenarios.
+	* SQL Delegates / late calculation/ingorance of field values through delegate methods
+	
+* Introduce just-in-time binding to log4net.dll
+
+* Multiple views and one table could all return the same type? Solution: GetMany, GetSingle protected methods on base Repository - Done
+* Mapping of enums - Done
+* Mapping of booleans - Done
+* Logging - Done
+* Injection of required dependecies
+	- Repository allowing mapping classes to do lazy lookup in the database. (Needed for nested types) - Done
+	- Injection of something other than IRepository?
+	- What happens if the repository has been disposed when attempting lazy load?!?!?
+
+* How to elegantly run the test suite on multiple target databases? (sqlite, sql server, mysql, etc) - Done
+
+* AndCondition - Done
+* ContainsCondition - Done
+* StartsWithCondition - Done
+* EndsWithCondition - Done
+* GreaterThanCondition - Done
+* LowerThanCondition - Done
+* OrCondition - Done
+
+* Sample Project
+	- Blog
+	- Ecommerce site
+	- Something else
