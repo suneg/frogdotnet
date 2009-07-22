@@ -74,11 +74,19 @@ namespace Frog.Orm
             Transaction.Delete(obj);
         }
 
+        /// <summary>
+        /// Deletes all entities of type T, where the supplied condition is met.
+        /// </summary>
+        /// <example>RemoveWhere&lt;Customer&gt;(Field.Equals("FirstName", "Sune"));</example>
+        /// <typeparam name="T"></typeparam>
         public void RemoveWhere<T>(ICondition condition)
         {
             Transaction.DeleteWhere<T>(condition);
         }
 
+        /// <summary>
+        /// Updates the record the underlying database corresponding to the supplied instance.
+        /// </summary>
         public void Update(object obj)
         {
             Transaction.Update(obj);
