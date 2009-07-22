@@ -94,7 +94,7 @@ namespace Frog.Orm.Dialects
             if (value is DateTime)
             {
                 var dateTime = (DateTime)value;
-                return String.Format("'{0}'", dateTime.ToString("o"));
+                return String.Format("'{0}'", dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             }
             if (value is Guid)
             {

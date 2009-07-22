@@ -152,7 +152,7 @@ namespace Frog.Orm.Test
 
             Assert.That(
                 factory.UpdateWhere("People", Field.Equals("Id", 7), collection),
-                Is.EqualTo("UPDATE [People] SET [Name] = 'John', [DateOfBirth] = '1980-12-25T00:00:00.0000000', [PomodorosCompleted] = 101 WHERE ([Id] = 7)"));
+                Is.EqualTo("UPDATE [People] SET [Name] = 'John', [DateOfBirth] = '1980-12-25 00:00:00.000', [PomodorosCompleted] = 101 WHERE ([Id] = 7)"));
         }
 
         [Test]
@@ -165,7 +165,7 @@ namespace Frog.Orm.Test
 
             Assert.That(
                 factory.Insert("People", collection),
-                Is.EqualTo("INSERT INTO [People]([Name],[DateOfBirth],[PomodorosCompleted]) VALUES('John','1980-12-25T00:00:00.0000000',101)"));
+                Is.EqualTo("INSERT INTO [People]([Name],[DateOfBirth],[PomodorosCompleted]) VALUES('John','1980-12-25 00:00:00.000',101)"));
         }
 
         [Test]
