@@ -1,6 +1,6 @@
 ﻿using System.Data;
-using Frog.Orm.Conditions;
 using Frog.Orm.Dialects;
+using Frog.Orm.Syntax;
 using Frog.Orm.Test;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;

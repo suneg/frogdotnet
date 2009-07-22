@@ -2,7 +2,7 @@
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Linq;
-using Frog.Orm.Conditions;
+using Frog.Orm.Syntax;
 using Frog.Orm.Test;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
@@ -21,13 +21,13 @@ namespace Frog.Orm.Test
 
             var builder = new SchemaBuilder(memoryDbConnection);
             builder.CreateTableFromType<OrderLine>();
-            builder.CreateTableFromType<Order>();
+            builder.CreateTableFromType<WebsiteOrder>();
 
             connection = new SqliteConnection((SQLiteConnection)memoryDbConnection);
 
             var repository = new Repository(connection);
-            repository.Create(new Order());
-            repository.Create(new Order());
+            repository.Create(new WebsiteOrder());
+            repository.Create(new WebsiteOrder());
 
             var line1 = new OrderLine { Description = "Product 1", ParentId = 1 };
             var line2 = new OrderLine {Description = "Product 2", ParentId = 1 };
@@ -54,7 +54,7 @@ namespace Frog.Orm.Test
             using (connection)
             {
                 var repository = new Repository(connection);
-                var order = repository.Get<Order>(1);
+                var order = repository.Get<WebsiteOrder>(1);
 
                 Assert.That(order.Orderlines.Count(), NUnit.Framework.SyntaxHelpers.Is.EqualTo(2));
             }
@@ -64,7 +64,7 @@ namespace Frog.Orm.Test
     #region Sample mapping classes
 
     [Table]
-    internal class Order
+    internal class WebsiteOrder
     {
         [PrimaryKey]
         public int Id { get; set; }

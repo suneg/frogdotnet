@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Frog.Orm.Conditions;
+using Frog.Orm.Syntax;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 

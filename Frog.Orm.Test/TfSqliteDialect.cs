@@ -1,4 +1,5 @@
 ﻿using Frog.Orm.Dialects;
+using Frog.Orm.Syntax;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -18,7 +19,7 @@ namespace Frog.Orm.Test
         public void SelectColumnsUnquoted()
         {
             var dialect = new SqliteDialect();
-            Assert.That(dialect.Select("Samples", "Id"), Is.EqualTo("SELECT Id FROM [Samples]"));
+            Assert.That(dialect.Select("Samples", Field.List("Id")), Is.EqualTo("SELECT Id FROM [Samples]"));
         }
     }
 }
