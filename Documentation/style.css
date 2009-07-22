@@ -94,3 +94,28 @@ pre.code
 {
     max-width:1000px;
 }
+
+table.listing
+{
+    margin-top:10px;
+    font-size:10pt;
+    border-spacing:0px;
+    border-collapse:collapse;
+}
+
+.listing td
+{
+    border:1px solid gray;
+    padding:5px;
+}
+
+td.header
+{
+    font-weight:bold;
+}
+
+.code
+{
+    font-family: Monospace, Courier New, Courier;
+    font-size:10pt;
+}

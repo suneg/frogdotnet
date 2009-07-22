@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Frog.NET</title>
+        
+        <link rel="Stylesheet" href="style.css" type="text/css" />
+    </head>
+
+    <body>
+        <table class="navbar">
+            <tr>
+                <td>Frog.NET</td>
+                <td align="right">v0.1</td>
+            </tr>
+        </table>
+        
+        <div id="logoContainer"><img src="frog.jpg" id="logo" /></div>
+
+        <div id="mainText">
+            <br />
+            <a href="Index.htm">Home</a>
+            
+            <h1>Conditions</h1>
+            
+            Frog.NET Conditions are object representations of SQL conditions, used in Get and Update<br />
+            scenarios.
+            
+            A number of conditions are currently supported, allowing you to construct a wide<br />
+            variety of queries.<br />
+            <br />
+            Take a look at the list below for an explanation of each.
+            
+            
+            <table style="width:650px" class="listing">
+            <tr>
+            <td class="header">AndCondition</td><td>Allows you to combine two conditions, indicating that both should be met</td>
+            </tr>
+            <tr>
+            <td class="header">OrCondition</td><td>Allows you to combine two conditions, indicating that any one of them should be met</td>
+            </tr>
+            <tr>
+            <td class="header">StartsWithCondition</td><td>Indicate that a text-based field should start with a certain string</td>
+            </tr>
+            <tr>
+            <td class="header">EndsWithCondition</td><td>Indicate that a text-based field should end with a certain string</td>
+            </tr>
+            <tr>
+            <td class="header">ContainsCondition</td><td>Indicate that a text-based field should contain a specified string</td>
+            </tr>
+            <tr>
+            <td class="header">NotCondition</td><td>Invert a condition</td>
+            </tr>
+            <tr>
+            <td class="header">EqualsCondition</td><td>Indicate that a field should have a particular value</td>
+            </tr>
+            <tr>
+            <td class="header">LessThanCondition</td><td>Indicate that a numeric field should have a value below the specified</td>
+            </tr>
+            <tr>
+            <td class="header">GreaterThanCondition</td><td>Indicate that a numeric field should have a value above the specified</td>
+            </tr>
+            <tr>
+            <td class="header">EarlierThanCondition</td><td>Indicate that a datetime field should be an earlier point in time than the specified value <i>(not implemented yet)</i></td>
+            </tr>
+            <tr>
+            <td class="header">LaterThanCondition</td><td>Indicate that a datetime field should be an earlier point in time than the specified value <i>(not implemented yet)</i></td>
+            </tr>
+            </table>
+            
+            <br /><br />
+            Note that you have easy access to all the conditions using the fluent Field class. For instance <span class="code">Field.Equals()</span> returns and EqualsCondition. <span class="code">Field.StartsWith()</span> returns a StartsWithCondition, and so forth.
+            <br />
+            
+            <h3>Translation</h3>
+            
+            Whatever the graph of condition objects you construct, it will at some point be converted to pieces of good ol' SQL. Here is a couple of examples:<br />
+            <br />
+            <h4>Example 1</h4>
+            <pre>
+    var condition = Field.Equals("Name", "John");
+    // becomes
+    WHERE ([Name] = 'John')
+            </pre>
+            <h4>Example 2</h4>
+            <pre>
+    var condition = Field.Or(
+                        Field.StartsWith("Name", "Catherine"),
+                        Field.StartsWith("Name", "George")
+                    );
+    // becomes
+    WHERE (([Name] LIKE '%Catherine') OR ([Name] LIKE '%George'))
+            </pre>
+            
+            <h4>Example 3</h4>
+            <pre>
+    var condition = Field.GreaterThan("TotalAmount", 500);
+    // becomes
+    WHERE ([TotalAmount] > 500)
+            </pre>
+        </div>
+        
+        <div class="footer">
+        Frog.NET 
+        </div>
+    </body>
+</html>
