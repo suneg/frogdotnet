@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Frog.Orm.Conditions;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -59,6 +60,28 @@ namespace Frog.Orm.Test
 
                 repository.Remove(entity);
                 Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(0));
+            }
+        }
+
+        [Test]
+        public void RemoveMultiple()
+        {
+            var entity1 = new Entity { Text = "testing"};
+            var entity2 = new Entity { Text = "testing" };
+            var entity3 = new Entity { Text = "something else" };
+
+            using (connection)
+            {
+                var repository = new Repository(connection);
+                repository.Create(entity1);
+                repository.Create(entity2);
+                repository.Create(entity3);
+
+                connection.CommitChanges();
+                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(3));
+
+                repository.RemoveWhere<Entity>(Field.StartsWith("Text", "test"));
+                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
             }
         }
 

@@ -74,6 +74,11 @@ namespace Frog.Orm
             Transaction.Delete(obj);
         }
 
+        public void RemoveWhere<T>(ICondition condition)
+        {
+            Transaction.DeleteWhere<T>(condition);
+        }
+
         public void Update(object obj)
         {
             Transaction.Update(obj);
