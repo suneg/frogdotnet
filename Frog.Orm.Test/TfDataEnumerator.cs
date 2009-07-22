@@ -174,6 +174,10 @@ namespace Frog.Orm.Test
         {
             throw new System.NotImplementedException();
         }
+        public void RemoveWhere<T>(ICondition condition)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public void Update(object obj)
         {

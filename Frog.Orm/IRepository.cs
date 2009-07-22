@@ -12,6 +12,7 @@ namespace Frog.Orm
         IEnumerable<T> GetWhere<T>(ICondition condition);
         T Create<T>(T obj);
         void Remove(object obj);
+        void RemoveWhere<T>(ICondition condition);
         void Update(object obj);
     }
 }
