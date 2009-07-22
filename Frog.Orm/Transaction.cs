@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using Frog.Orm.Conditions;
 using Frog.Orm.Dialects;
+using Frog.Orm.Syntax;
 using log4net;
 
 namespace Frog.Orm
@@ -40,7 +41,7 @@ namespace Frog.Orm
 
             ICondition condition = CreatePrimaryKeyCondition(typeInfo, primaryKeyValue);
 
-            var commandText = dialect.SelectWhere(typeInfo.TableName, condition, columns.ToArray());
+            var commandText = dialect.SelectWhere(typeInfo.TableName, Field.List(columns.ToArray()), condition);
             var command = CreateCommand(commandText);
 
             // TODO: Catch InvalidOperationException : Sequence contains no elements, and give a better explanation
@@ -94,11 +95,11 @@ namespace Frog.Orm
 
             if (condition == null)
             {
-                commandText = dialect.Select(sourceName, columns);
+                commandText = dialect.Select(sourceName, Field.List(columns));
             }
             else
             {
-                commandText = dialect.SelectWhere(sourceName, condition, columns);
+                commandText = dialect.SelectWhere(sourceName, Field.List(columns), condition);
             }
             return commandText;
         }

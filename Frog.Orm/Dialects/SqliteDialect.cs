@@ -1,4 +1,5 @@
 using System;
+using Frog.Orm.Syntax;
 
 namespace Frog.Orm.Dialects
 {
@@ -9,9 +10,9 @@ namespace Frog.Orm.Dialects
             return "SELECT last_insert_rowid()";
         }
 
-        public override string Select(string tableName, params string[] columns)
+        public override string Select(string tableName, FieldList list)
         {
-            var columnList = String.Join(",", columns);
+            var columnList = String.Join(",", list.Fields);
             return String.Format("SELECT {0} FROM [{1}]", columnList, tableName);
         }
     }

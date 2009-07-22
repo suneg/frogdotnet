@@ -1,6 +1,7 @@
 ﻿using System;
+using Frog.Orm.Conditions;
 
-namespace Frog.Orm.Conditions
+namespace Frog.Orm.Syntax
 {
     public class Field
     {
@@ -83,5 +84,20 @@ namespace Frog.Orm.Conditions
         {
             throw new NotImplementedException();
         }
+
+        public static FieldList List(params string[] list)
+        {
+            return new FieldList(list);
+        }
+    }
+
+    public class FieldList
+    {
+        public FieldList(params string[] list)
+        {
+            Fields = list;
+        }
+
+        public string[] Fields { get; set; }
     }
 }

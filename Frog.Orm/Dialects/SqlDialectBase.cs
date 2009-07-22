@@ -3,21 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Frog.Orm.Conditions;
+using Frog.Orm.Syntax;
 
 namespace Frog.Orm.Dialects
 {
     public abstract class SqlDialectBase : ISqlDialect
     {
-        public virtual string Select(string tableName, params string[] columns)
+        public virtual string Select(string tableName, FieldList list)
         {
-            var columnList = String.Join("],[", columns);
-            return String.Format("SELECT [{0}] FROM [{1}]", columnList, tableName);
+            return SelectWhere(tableName, list, null, null);
         }
 
-        public virtual string SelectWhere(string tableName, ICondition condition, params string[] columns)
+        public virtual string SelectWhere(string tableName, FieldList list, Order order)
         {
-            var columnList = String.Join("],[", columns);
-            return String.Format("SELECT [{0}] FROM [{1}] WHERE {2}", columnList, tableName, GetWhereClause(condition));
+            return SelectWhere(tableName, list, null, order);
+        }
+
+        public virtual string SelectWhere(string tableName, FieldList list, ICondition condition)
+        {
+            return SelectWhere(tableName, list, condition, null);
+        }
+
+        public virtual string SelectWhere(string tableName, FieldList list, ICondition condition, Order order)
+        {
+            var columnList = String.Join("],[", list.Fields);
+            var statement = String.Format("SELECT [{0}] FROM [{1}]", columnList, tableName);
+
+            if(condition != null)
+                statement += String.Format(" WHERE {0}", GetWhereClause(condition));
+
+            if(order != null)
+                statement += String.Format(" ORDER BY {0}", GetOrderClause(order));
+            
+            return statement;
         }
 
         public virtual string Update(string tableName, Dictionary<string, object> columnValueCollection)
@@ -170,6 +188,23 @@ namespace Frog.Orm.Dialects
             }
 
             throw new InvalidOperationException(String.Format("Unsupported Condition ({0})", condition.GetType().FullName));
+        }
+
+        private static string GetOrderClause(Order order)
+        {
+            var builder = new StringBuilder();
+
+            foreach(var orderPart in order.Parts)
+            {
+                builder.AppendFormat("[{0}] ", orderPart.Column);
+
+                if(orderPart.Direction == OrderDirection.Ascending)
+                    builder.Append("ASC,");
+                else
+                    builder.Append("DESC,");
+            }
+
+            return builder.ToString().TrimEnd(',');
         }
 
         protected static string Escape(string value)
