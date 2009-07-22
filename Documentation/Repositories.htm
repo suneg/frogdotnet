@@ -35,7 +35,7 @@
             <pre><span class="lnum">   2:  </span>{</pre>
             <pre><span class="lnum">   3:  </span>    <span class="kwrd">public</span> IEnumerable&lt;Book&gt; GetTop5BestSellingBooksThisYear()</pre>
             <pre><span class="lnum">   4:  </span>    {</pre>
-            <pre><span class="lnum">   5:  </span>        return <span class="kwrd">base</span>.GetMany&lt;Book&gt;("Top5SellingBooks", Field.Equals("Year", DateTime.Now.Year)</pre>
+            <pre><span class="lnum">   5:  </span>        return <span class="kwrd">base</span>.GetMany&lt;Book&gt;("Top5SellingBooks", Field.Equals("Year", DateTime.Now.Year));</pre>
             <pre><span class="lnum">   6:  </span>    }</pre>
             <pre><span class="lnum">   7:  </span>}</pre>
             </div>

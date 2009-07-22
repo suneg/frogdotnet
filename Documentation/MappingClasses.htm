@@ -98,7 +98,7 @@
             <pre><span class="lnum">  10:  </span>    [Column]</pre>
             <pre><span class="lnum">  11:  </span>    <span class="kwrd">public</span> IList&lt;Child&gt; Children </pre>
             <pre><span class="lnum">  12:  </span>    {</pre>
-            <pre><span class="lnum">  13:  </span>        var result = Repository.GetWhere&lt;Child&gt;(Expression.Equals(<span class="str">"ParentId"</span>, <span class="kwrd">this</span>.Id);</pre>
+            <pre><span class="lnum">  13:  </span>        var result = Repository.GetWhere&lt;Child&gt;(Field.Equals(<span class="str">"ParentId"</span>, <span class="kwrd">this</span>.Id);</pre>
             <pre><span class="lnum">  14:  </span>        <span class="kwrd">return</span> result.ToList();</pre>
             <pre><span class="lnum">  15:  </span>    }</pre>
             <pre><span class="lnum">  16:  </span>}</pre>
