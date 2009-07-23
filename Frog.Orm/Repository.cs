@@ -59,16 +59,30 @@ namespace Frog.Orm
             return Transaction.GetAll<T>();
         }
 
+        // TODO: public IEnumerable<T> GetAll<T>(Order)
+
+        /// <summary>
+        /// Gets a set of entities of type T that matches a supplied criteria.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="condition">Condition that must be met for an entity to be included in the result.</param>
+        /// <returns></returns>
         public IEnumerable<T> GetWhere<T>(ICondition condition)
         {
             return Transaction.GetWhere<T>(condition);
         }
+
+        // TODO: public IEnumerable<T> GetWhere<T>(Condition, Order)
 
         public T Create<T>(T obj)
         {
             return Transaction.Create(obj);
         }
 
+        /// <summary>
+        /// Deletes a record in the database.
+        /// </summary>
+        /// <example>Remove&lt;Product&gt;(selectedProduct);</example>
         public void Remove(object obj)
         {
             Transaction.Delete(obj);

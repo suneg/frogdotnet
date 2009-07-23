@@ -13,14 +13,15 @@ NotCondition
 
 * Support PrimaryKeys of type long (bigint), int32, and guids. Verify both with sql server
 * Fetching of GUID columns
-* Rename Connection to SqlServerConnection
+
 
 * Descriptive failures on mapping errors (like mapping string to int32)
 * UpdateWhere
 
 * DeleteAll
-* DeleteWhere / RemoveWhere
-* Row ordering. Where to put it? along conditionals?
+* Row ordering
+	- Single column - Done
+	- Multiple columns
 
 * Support for dynamic updates/inserts based on database functions, like getdate(). Scenario: CreatedDate and ModifiedDate on an entity.
 	- Ability to ignore fields in certain insert and update scenarios.
@@ -28,6 +29,8 @@ NotCondition
 	
 * Introduce just-in-time binding to log4net.dll
 
+* DeleteWhere - Done
+* Rename Connection to SqlServerConnection - Done
 * Multiple views and one table could all return the same type? Solution: GetMany, GetSingle protected methods on base Repository - Done
 * Mapping of enums - Done
 * Mapping of booleans - Done
