@@ -127,8 +127,14 @@ namespace Frog.Orm.Test
 
         // TODO: Test Greater than or equal
         // TODO: Test Less than or equal
-        // TODO: Test 'not' (invert) conditional.
 
+        [Test]
+        public void SelectWhereColumnNotEquals()
+        {
+            Assert.That(
+                factory.SelectWhere("table", Field.List("Text"), Field.Not(Field.Equals("column", 42))),
+                Is.EqualTo("SELECT [Text] FROM [table] WHERE (NOT ([column] = 42))"));
+        }
 
         [Test]
         public void SelectAndOrderByColumnAscending()

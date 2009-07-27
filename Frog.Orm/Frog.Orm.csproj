@@ -56,6 +56,7 @@
     <Compile Include="Conditions\AndCondition.cs" />
     <Compile Include="Conditions\ColumnCondition.cs" />
     <Compile Include="Conditions\ContainsCondition.cs" />
+    <Compile Include="Conditions\NotCondition.cs" />
     <Compile Include="Conditions\OrCondition.cs" />
     <Compile Include="Conditions\LessThanCondition.cs" />
     <Compile Include="Conditions\GreaterThanCondition.cs" />

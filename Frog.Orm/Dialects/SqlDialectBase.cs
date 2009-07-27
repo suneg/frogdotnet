@@ -187,6 +187,12 @@ namespace Frog.Orm.Dialects
                 return String.Format("([{0}] < {1})", clause.Column, MapValueToSql(clause.Value));
             }
 
+            if (condition is NotCondition)
+            {
+                var clause = (condition as NotCondition);
+                return String.Format("(NOT {0})", GetWhereClause(clause.InverseCondition));
+            }
+
             throw new InvalidOperationException(String.Format("Unsupported Condition ({0})", condition.GetType().FullName));
         }
 

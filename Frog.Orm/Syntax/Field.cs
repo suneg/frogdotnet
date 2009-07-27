@@ -82,7 +82,7 @@ namespace Frog.Orm.Syntax
 
         public static ICondition Not(ICondition condition)
         {
-            throw new NotImplementedException();
+            return new NotCondition(condition);
         }
 
         public static FieldList List(params string[] list)

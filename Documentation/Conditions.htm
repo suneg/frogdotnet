@@ -47,7 +47,7 @@
             <td class="header">ContainsCondition</td><td>Indicate that a text-based field should contain a specified string</td>
             </tr>
             <tr>
-            <td class="header">NotCondition</td><td>Invert a condition</td>
+            <td class="header">NotCondition</td><td>Indicates that a field should match the inverse of a condition</td>
             </tr>
             <tr>
             <td class="header">EqualsCondition</td><td>Indicate that a field should have a particular value</td>
@@ -95,6 +95,15 @@
     var condition = Field.GreaterThan("TotalAmount", 500);
     // becomes
     WHERE ([TotalAmount] > 500)
+            </pre>
+            
+            <h4>Example 4</h4>
+            <pre>
+    var condition = Field.Not(
+                        Field.GreaterThan("TotalAmount", 500)
+                    );
+    // becomes
+    WHERE (NOT ([TotalAmount] > 500))
             </pre>
         </div>
         
