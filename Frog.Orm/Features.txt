@@ -20,6 +20,7 @@ NotCondition
 
 * DeleteAll
 * Row ordering
+	- Limit returned row count (e.g. TOP 200) 
 	- Single column - Done
 	- Multiple columns
 

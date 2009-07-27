@@ -74,6 +74,19 @@ namespace Frog.Orm.Test
                 Assert.That(entities.First().ActualEnumValue, Is.EqualTo(SampleEnum.B));
             }
         }
+
+        [Test, Ignore("Not possible yet - We need a working solution for this issue")]
+        public void IterateResultTwice()
+        {
+            using (connection)
+            {
+                var repository = new Repository(connection);
+                var entities = repository.GetAll<TypeWithEnumMember>();
+
+                Assert.That(entities.Count(), Is.EqualTo(1));
+                Assert.That(entities.Count(), Is.EqualTo(1));
+            }
+        }
     }
 
 
