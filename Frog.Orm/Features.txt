@@ -1,7 +1,6 @@
 ﻿
-EarlierThanCondition
-LaterThanCondition
-NotCondition
+* EarlierThanCondition
+* LaterThanCondition
 
 * Rename [Table(Name..] to [Entity(Source..]
 * Ability to mark mapping class as [ReadOnly] (cannot be used in insert, update or delete scenarios). [Entity(Table] vs. [ReadOnlyEntity(Source
@@ -50,6 +49,7 @@ NotCondition
 * GreaterThanCondition - Done
 * LowerThanCondition - Done
 * OrCondition - Done
+* NotCondition - Done
 
 * Sample Project
 	- Blog
