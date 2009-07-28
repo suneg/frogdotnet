@@ -14,12 +14,12 @@
 * Fetching of GUID columns
 
 * Descriptive failures on mapping errors (like mapping string to int32)
-* UpdateWhere
+* UpdateWhere - how are we going to implemented something like this..? Should be support this through the repository interface at all?
 
 * Row ordering
 	- Limit returned row count (e.g. TOP 200) 
-	- Single column - Done
 	- Multiple columns
+	- Single column - Done
 
 * Support for dynamic updates/inserts based on database functions, like getdate(). Scenario: CreatedDate and ModifiedDate on an entity.
 	- Ability to ignore fields in certain insert and update scenarios.

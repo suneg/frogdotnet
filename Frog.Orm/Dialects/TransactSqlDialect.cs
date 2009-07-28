@@ -1,4 +1,3 @@
-using Frog.Orm.Dialects;
 
 namespace Frog.Orm.Dialects
 {
