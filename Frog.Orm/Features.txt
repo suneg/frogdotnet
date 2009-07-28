@@ -13,11 +13,9 @@
 * Support PrimaryKeys of type long (bigint), int32, and guids. Verify both with sql server
 * Fetching of GUID columns
 
-
 * Descriptive failures on mapping errors (like mapping string to int32)
 * UpdateWhere
 
-* DeleteAll
 * Row ordering
 	- Limit returned row count (e.g. TOP 200) 
 	- Single column - Done
@@ -26,9 +24,11 @@
 * Support for dynamic updates/inserts based on database functions, like getdate(). Scenario: CreatedDate and ModifiedDate on an entity.
 	- Ability to ignore fields in certain insert and update scenarios.
 	* SQL Delegates / late calculation/ingorance of field values through delegate methods
+	* ExecuteRaw method on ITransaction - Done
 	
 * Introduce just-in-time binding to log4net.dll
 
+* DeleteAll - Done
 * DeleteWhere - Done
 * Rename Connection to SqlServerConnection - Done
 * Multiple views and one table could all return the same type? Solution: GetMany, GetSingle protected methods on base Repository - Done

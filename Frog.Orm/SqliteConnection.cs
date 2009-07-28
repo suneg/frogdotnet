@@ -7,16 +7,20 @@ namespace Frog.Orm
     public class SqliteConnection : IConnection
     {
         private readonly SQLiteConnection connection;
+        private readonly ISqlDialect dialect;
         private ITransaction currentTransaction;
+        
 
         public SqliteConnection(string connectionString)
         {
             connection = new SQLiteConnection(connectionString);
+            dialect = new SqliteDialect();
         }
 
         public SqliteConnection(SQLiteConnection connection)
         {
             this.connection = connection;
+            dialect = new SqliteDialect();
         }
 
         public void Dispose()
@@ -52,7 +56,7 @@ namespace Frog.Orm
             if(connection.State != ConnectionState.Open)
                 connection.Open();
 
-            return new Transaction(connection.BeginTransaction(), new SqliteDialect(), DataEnumerator);
+            return new Transaction(connection.BeginTransaction(), Dialect, DataEnumerator);
         }
 
         public ITransaction Transaction
@@ -66,6 +70,7 @@ namespace Frog.Orm
             }
         }
 
+        public ISqlDialect Dialect { get { return dialect; } }
         public DataEnumerator DataEnumerator { get; set; }
     }
 }

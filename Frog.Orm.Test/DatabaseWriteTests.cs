@@ -37,9 +37,7 @@ namespace Frog.Orm.Test
                 connection.CommitChanges();
 
                 entity.Text = "hello everyone";
-
                 repository.Update(entity);
-                connection.CommitChanges();
 
                 var updatedObject = repository.Get<Entity>(entity.Id);
                 Assert.That(updatedObject.Text, Is.EqualTo("hello everyone"));
@@ -55,7 +53,7 @@ namespace Frog.Orm.Test
             {
                 var repository = new Repository(connection);
                 entity = repository.Create(entity);
-                connection.CommitChanges();
+                
                 Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
 
                 repository.Remove(entity);
@@ -66,23 +64,42 @@ namespace Frog.Orm.Test
         [Test]
         public void RemoveMultiple()
         {
-            var entity1 = new Entity { Text = "testing"};
-            var entity2 = new Entity { Text = "testing" };
-            var entity3 = new Entity { Text = "something else" };
-
             using (connection)
             {
                 var repository = new Repository(connection);
-                repository.Create(entity1);
-                repository.Create(entity2);
-                repository.Create(entity3);
+                CreateThreeEntities(repository);
 
-                connection.CommitChanges();
                 Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(3));
 
                 repository.RemoveWhere<Entity>(Field.StartsWith("Text", "test"));
                 Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
             }
+        }
+
+        [Test]
+        public void RemoveAll()
+        {
+            using (connection)
+            {
+                var repository = new Repository(connection);
+                CreateThreeEntities(repository);
+
+                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(3));
+
+                repository.RemoveAll<Entity>();
+                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(0));
+            }
+        }
+
+        private static void CreateThreeEntities(Repository repository)
+        {
+            var entity1 = new Entity { Text = "testing" };
+            var entity2 = new Entity { Text = "testing" };
+            var entity3 = new Entity { Text = "something else" };
+                
+            repository.Create(entity1);
+            repository.Create(entity2);
+            repository.Create(entity3);
         }
 
         [Test]

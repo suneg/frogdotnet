@@ -1,4 +1,5 @@
 ﻿using System;
+using Frog.Orm.Dialects;
 
 namespace Frog.Orm
 {
@@ -6,6 +7,7 @@ namespace Frog.Orm
     {
         ITransaction Transaction { get; }
         DataEnumerator DataEnumerator { get; set; }
+        ISqlDialect Dialect { get; }
         void CommitChanges();
         void Rollback();
     }

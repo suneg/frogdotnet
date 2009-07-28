@@ -177,6 +177,12 @@ namespace Frog.Orm
             ExecuteNonQuery(delete);
         }
 
+        public IEnumerable<T> ExecuteRaw<T>(string commandText)
+        {
+            var command = CreateCommand(commandText);
+            return dataEnumerator.GetEnumerator<T>(CreateLateBoundReader(command)); 
+        }
+
         private IDbCommand CreateCommand(string commandText)
         {
             log.Info(commandText);

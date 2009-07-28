@@ -14,39 +14,27 @@ namespace Frog.Orm
             connection.DataEnumerator = new DataEnumerator(this);
         }
 
+        /// <summary>
+        /// Get a record from the database based on its identity (primary key)
+        /// </summary>
+        /// <typeparam name="T">The mapping type of the record</typeparam>
+        /// <param name="primaryKeyValue">The long/bigint identity value of the record</param>
+        /// <returns>A mapped instance of the record</returns>
         public T Get<T>(long primaryKeyValue)
         {
             return Transaction.GetByPrimaryKey<T>(primaryKeyValue);
         }
 
+        /// <summary>
+        /// Get a record from the database based on its identity (primary key)
+        /// </summary>
+        /// <typeparam name="T">The mapping type of the record</typeparam>
+        /// <param name="primaryKeyValue">The guid identity value of the record</param>
+        /// <returns>A mapped instance of the record</returns>
         public T Get<T>(Guid primaryKeyValue)
         {
             return Transaction.GetByPrimaryKey<T>(primaryKeyValue);
-        }
-
-        /// <summary>
-        /// Retrieves a list of rows for either a table or view in the database.
-        /// </summary>
-        /// <typeparam name="T">Entity type</typeparam>
-        /// <param name="sourceName">Name of a Table or View in the database</param>
-        /// <param name="condition">Adds a condition to filter the result</param>
-        /// <returns>Enumerable list of records mapped to a .NET entity</returns>
-        protected IEnumerable<T> GetMany<T>(string sourceName, ICondition condition/*, IOrdering order*/)
-        {
-            return Transaction.GetMany<T>(sourceName, condition);
-        }
-
-        /// <summary>
-        /// Gets a single entity from a table or view in the database
-        /// </summary>
-        /// <typeparam name="T">Entity type</typeparam>
-        /// <param name="sourceName">Name of a Table or View in the database</param>
-        /// <param name="condition">Adds a condition to filter the result</param>
-        /// <returns>A database record mapped to a .NET entity</returns>
-        protected T GetSingle<T>(string sourceName, ICondition condition)
-        {
-            return Transaction.GetSingle<T>(sourceName, condition);
-        }
+        }        
 
         /// <summary>
         /// Gets all entities of type T
@@ -99,11 +87,54 @@ namespace Frog.Orm
         }
 
         /// <summary>
-        /// Updates the record the underlying database corresponding to the supplied instance.
+        /// Deletes all entities of type T
+        /// </summary>
+        /// <typeparam name="T">The type of records to remove</typeparam>
+        public void RemoveAll<T>()
+        {
+            Transaction.DeleteAll<T>();
+        }
+
+        /// <summary>
+        /// Updates the record in the underlying database that corresponds to the supplied instance.
         /// </summary>
         public void Update(object obj)
         {
             Transaction.Update(obj);
+        }
+
+        /// <summary>
+        /// Retrieves a list of rows for either a table or view in the database.
+        /// </summary>
+        /// <typeparam name="T">Entity type</typeparam>
+        /// <param name="sourceName">Name of a Table or View in the database</param>
+        /// <param name="condition">Adds a condition to filter the result</param>
+        /// <returns>Enumerable list of records mapped to a .NET entity</returns>
+        protected IEnumerable<T> GetMany<T>(string sourceName, ICondition condition/*, IOrdering order*/)
+        {
+            return Transaction.GetMany<T>(sourceName, condition);
+        }
+
+        /// <summary>
+        /// Gets a single entity from a table or view in the database
+        /// </summary>
+        /// <typeparam name="T">Entity type</typeparam>
+        /// <param name="sourceName">Name of a Table or View in the database</param>
+        /// <param name="condition">Adds a condition to filter the result</param>
+        /// <returns>A database record mapped to a .NET entity</returns>
+        protected T GetSingle<T>(string sourceName, ICondition condition)
+        {
+            return Transaction.GetSingle<T>(sourceName, condition);
+        }
+
+        /// <summary>
+        /// Executes an arbitrary SQL statement, and attempts conversion of resulting rows into instances of the specified mapping class (T).
+        /// </summary>
+        /// <typeparam name="T">The mapping class which to convert the results to</typeparam>
+        /// <param name="rawSqlStatement">Actual SQL statement to be executed against the underlying database</param>
+        protected IEnumerable<T> ExecuteRawSql<T>(string rawSqlStatement)
+        {
+            return Transaction.ExecuteRaw<T>(rawSqlStatement);
         }
 
         private ITransaction Transaction

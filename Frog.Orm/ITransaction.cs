@@ -12,6 +12,7 @@ namespace Frog.Orm
         IEnumerable<T> GetAll<T>();
         IEnumerable<T> GetMany<T>(string sourceName, ICondition condition);
         IEnumerable<T> GetWhere<T>(ICondition condition);
+        IEnumerable<T> ExecuteRaw<T>(string sqlStatement);
         
         void Rollback();
         void Commit();

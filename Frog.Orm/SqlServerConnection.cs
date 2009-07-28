@@ -7,11 +7,13 @@ namespace Frog.Orm
     public class SqlServerConnection : IConnection
     {
         private readonly SqlConnection connection;
+        private readonly ISqlDialect dialect;
         private ITransaction currentTransaction;
 
         public SqlServerConnection(string connectionString)
         {
             connection = new SqlConnection(connectionString);
+            dialect = new TransactSqlDialect();
         }
 
         public void Dispose()
@@ -33,7 +35,7 @@ namespace Frog.Orm
             if(connection.State == ConnectionState.Closed)
                 connection.Open();
 
-            currentTransaction = new Transaction(connection.BeginTransaction(), new TransactSqlDialect(), DataEnumerator);
+            currentTransaction = new Transaction(connection.BeginTransaction(), Dialect, DataEnumerator);
             return currentTransaction;
         }
 
@@ -44,6 +46,11 @@ namespace Frog.Orm
         {
             currentTransaction.Rollback();   // TODO: Fail if no transaction is running
             currentTransaction = null;
+        }
+
+        public ISqlDialect Dialect
+        {
+            get { return dialect; }
         }
 
         /// <summary>

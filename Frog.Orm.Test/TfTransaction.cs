@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using Frog.Orm.Dialects;
 using Frog.Orm.Syntax;
-using Frog.Orm.Test;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
@@ -74,7 +73,7 @@ namespace Frog.Orm.Test
             var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
             var match = transaction.GetByPrimaryKey<Sample>(7);
 
-            Assert.That(match.Id, NUnit.Framework.SyntaxHelpers.Is.EqualTo(7));
+            Assert.That(match.Id, Is.EqualTo(7));
         }
 
         [Test]
@@ -179,6 +178,26 @@ namespace Frog.Orm.Test
 
             var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
             transaction.DeleteAll<Person>();
+        }
+
+        [Test]
+        public void ExecuteRaw()
+        {
+            Expect.Call(command.CommandText).SetPropertyWithArgument("SELECT hEllo from wOrld");
+
+            Expect.Call(enumerator.GetEnumerator<Sample>(null))
+                .Return(new[]
+                            {
+                                new Sample(), new Sample()
+                            });
+            LastCall.IgnoreArguments();
+
+            mocks.ReplayAll();
+
+            var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
+            var result = transaction.ExecuteRaw<Sample>("SELECT hEllo from wOrld");
+
+            Assert.That(result.Count(), Is.EqualTo(2));
         }
 
         [TearDown]
