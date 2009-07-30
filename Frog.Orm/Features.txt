@@ -10,6 +10,9 @@
 
 * Support for INSERT INTO on Oracle. They use a different auto increment approach.
 
+* FastRepository
+	- Inserts in fire-and-forget mode. New object identity is not automatically fetched. Usefull in many scenarios of inserting child-rows
+
 * Support PrimaryKeys of type long (bigint), int32, and guids. Verify both with sql server
 * Fetching of GUID columns
 
