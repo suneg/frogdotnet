@@ -189,6 +189,12 @@ namespace Frog.Orm.Test
 
         [Column]
         public string Text { get; set; }
+
+        //[Column]
+        public string Text2 { get; set; }
+
+        //[Column]
+        public string Text3 { get; set; }
     }
 
     [Table]

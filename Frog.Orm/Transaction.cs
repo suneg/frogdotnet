@@ -15,6 +15,7 @@ namespace Frog.Orm
         private readonly ISqlDialect dialect;
         private readonly IDataEnumerator dataEnumerator;
         private readonly ILog log;
+        private TypeMapper mapper;
 
         public Transaction(IDbTransaction transaction, ISqlDialect dialect, IDataEnumerator dataEnumerator)
         {
@@ -22,6 +23,7 @@ namespace Frog.Orm
             this.dialect = dialect;
             this.dataEnumerator = dataEnumerator;
             log = LogManager.GetLogger(typeof(Transaction));
+            mapper = new TypeMapper();
         }
 
         public T GetByPrimaryKey<T>(long primaryKeyValue)
@@ -112,7 +114,6 @@ namespace Frog.Orm
 
         public T Create<T>(T instance)
         {
-            var mapper = new TypeMapper();
             var typeInfo = mapper.GetTypeInfo(typeof (T));
 
             var values = mapper.GetInstanceValues(instance);
@@ -125,7 +126,7 @@ namespace Frog.Orm
 
             var identity = ExecuteScalar(dialect.SelectIdentity());
 
-            if(typeInfo.HasPrimaryKey())
+            if (typeInfo.HasPrimaryKey())
                 mapper.SetValueOfPrimaryKey(instance, identity);
 
             return instance;
@@ -133,7 +134,6 @@ namespace Frog.Orm
 
         public void Update(object instance)
         {
-            var mapper = new TypeMapper();
             var typeInfo = mapper.GetTypeInfo(instance.GetType());
 
             var values = mapper.GetInstanceValues(instance);
@@ -150,7 +150,6 @@ namespace Frog.Orm
 
         public void Delete(object instance)
         {
-            var mapper = new TypeMapper();
             var typeInfo = mapper.GetTypeInfo(instance.GetType());
 
             var primaryKey = Convert.ToInt32(mapper.GetValueOfPrimaryKey(instance));
@@ -162,7 +161,6 @@ namespace Frog.Orm
 
         public void DeleteWhere<T>(ICondition condition)
         {
-            var mapper = new TypeMapper();
             var typeInfo = mapper.GetTypeInfo(typeof(T));
             var delete = dialect.DeleteWhere(typeInfo.TableName, condition);
             ExecuteNonQuery(delete);
@@ -170,7 +168,6 @@ namespace Frog.Orm
 
         public void DeleteAll<T>()
         {
-            var mapper = new TypeMapper();
             var typeInfo = mapper.GetTypeInfo(typeof(T));
 
             var delete = dialect.DeleteAll(typeInfo.TableName);

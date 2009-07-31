@@ -13,7 +13,7 @@ namespace Frog.Orm.Test.SqlServer
         [TestFixtureSetUp]
         public void Initialize()
         {
-            Configuration.Initialize("Frog.Orm.Test.dll.config");
+            //Configuration.Initialize("Frog.Orm.Test.dll.config");
         }
 
         [SetUp]
@@ -38,6 +38,22 @@ namespace Frog.Orm.Test.SqlServer
 
             setupConnection.Close();
             connection.Dispose();
+        }
+
+        [Test, Explicit]
+        public void Insert25000Rows()
+        {
+            using(connection)
+            {
+                var repository = new Repository(connection);
+
+                for (int i = 0; i < 25000; i++)
+                {
+                    var instance = new Entity();
+                    instance.Text = "Hello world " + i;
+                    repository.Create(instance);
+                }
+            }
         }
     }
 }

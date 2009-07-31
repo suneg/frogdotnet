@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Text;
-using Frog.Orm;
 
 namespace Frog.Orm.Test
 {
@@ -105,7 +104,6 @@ namespace Frog.Orm.Test
 
             command.CommandText = cmd.ToString();
             command.ExecuteNonQuery();
-
         }
     }
 }
