@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -40,13 +41,36 @@ namespace Frog.Orm.Test
             foreach (var column in info.Columns)
             {
                 if (column.Name != info.PrimaryKey)
-                    cmd.AppendFormat(",{0} varchar(64)", column.Name);
+                    cmd.AppendFormat(",{0} {1}", column.Name, GetDbType(column.Type));
             }
 
             cmd.Append(")");
 
             command.CommandText = cmd.ToString();
             command.ExecuteNonQuery();            
+        }
+
+        private string GetDbType(Type type)
+        {
+            var booleanTypeName = "bit";
+
+            if (this.connection.ConnectionString.Contains("sqlite"))
+                booleanTypeName = "boolean";
+
+            if (type.IsEnum)
+                return "integer";
+            if (type == typeof(Boolean))
+                return booleanTypeName;
+            if (type == typeof(Int32))
+                return "integer";
+            if (type == typeof(Decimal))
+                return "decimal";
+            if (type == typeof(Int64))
+                return "long";
+            if (type == typeof(String))
+                return "nvarchar(64)";
+
+            throw new NotImplementedException(String.Format("Unknown type. Cannot map '{0}' to database type", type.FullName));
         }
 
         public void CreateViewFromType<T>(string viewName)
