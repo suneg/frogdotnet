@@ -67,18 +67,6 @@ namespace Frog.Orm.Test
             command.ExecuteNonQuery();
         }
 
-
-        //private string GetDbType(Type type)
-        //{
-        //    if (type == typeof(Int32))
-        //        return "integer";
-        //    if (type == typeof(Int64))
-        //        return "long";
-        //    if (type  == typeof(String))
-        //        return "nvarchar";
-
-        //    throw new NotImplementedException("Unknown type. Cannot map to database type");
-        //}
         public void RemoveView(string viewName)
         {
             var command = connection.CreateCommand();
