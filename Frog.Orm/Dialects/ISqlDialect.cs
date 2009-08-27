@@ -14,5 +14,6 @@ namespace Frog.Orm.Dialects
         string DeleteWhere(string tableName, ICondition condition);
         string DeleteAll(string tableName);
         string SelectIdentity();
+        string SelectScalar(IScalarExpression expression);
     }
 }

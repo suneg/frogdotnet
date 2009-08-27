@@ -87,6 +87,44 @@ namespace Frog.Orm.Test
                 Assert.That(entities.Count(), Is.EqualTo(1));
             }
         }
+
+        [Test]
+        public void CountEntitiesUsingScalarResult()
+        {
+            using (connection)
+            {
+                var repository = new CustomRepositoryForScalarQueries(connection);
+                Assert.That(repository.CountEntities(), Is.EqualTo(3));
+            }
+        }
+
+        [Test]
+        public void AverageFieldUsingScalarResult()
+        {
+            using (connection)
+            {
+                var repository = new CustomRepositoryForScalarQueries(connection);
+                Assert.That(repository.GetAverage(), Is.EqualTo(2));
+            }
+        }
+    }
+
+    internal class CustomRepositoryForScalarQueries : Repository
+    {
+        public CustomRepositoryForScalarQueries(IConnection connection) : base(connection)
+        {
+            
+        }
+
+        public int CountEntities()
+        {
+            return Convert.ToInt32(GetScalar(Scalar.Count("Sample")));
+        }
+
+        public double GetAverage()
+        {
+            return Convert.ToDouble(GetScalar(Scalar.Average("Id","Sample")));
+        }
     }
 
 

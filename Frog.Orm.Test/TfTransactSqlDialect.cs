@@ -226,5 +226,28 @@ namespace Frog.Orm.Test
             ICondition condition = Field.Equals("Amount", 120);
             Assert.That(factory.DeleteWhere("WebsiteOrder", condition), Is.EqualTo("DELETE FROM [WebsiteOrder] WHERE ([Amount] = 120)"));
         }
+
+        [Test]
+        public void GetCount()
+        {
+            IScalarExpression expression = Scalar.Count("Entity");
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT COUNT(*) FROM [Entity]"));
+        }
+
+        [Test]
+        public void GetAverage()
+        {
+            IScalarExpression expression = Scalar.Average("Age", "People");
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT AVG([Age]) FROM [People]"));
+        }
+
+        [Test]
+        public void GetAverageWithCondition()
+        {
+            IScalarExpression expression = Scalar.Average("Age", "People");
+            expression.Condition = Field.Equals("Gender", "Male");
+
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT AVG([Age]) FROM [People] WHERE ([Gender] = 'Male')"));
+        }
     }
 }

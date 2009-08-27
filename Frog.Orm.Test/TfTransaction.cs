@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Frog.Orm.Conditions;
 using Frog.Orm.Dialects;
 using Frog.Orm.Syntax;
 using NUnit.Framework;
@@ -198,6 +199,22 @@ namespace Frog.Orm.Test
             var result = transaction.ExecuteRaw<Sample>("SELECT hEllo from wOrld");
 
             Assert.That(result.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void GetScalar()
+        {
+            Expect.Call(command.CommandText).SetPropertyWithArgument("SELECT COUNT(*) FROM [SampleTable]");
+            Expect.Call(command.ExecuteScalar()).Return(7);
+
+            mocks.ReplayAll();
+
+            var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
+
+            var scalarExpression = Scalar.Count("SampleTable");
+            var result = transaction.GetScalar(scalarExpression);
+
+            Assert.That(result, Is.EqualTo(7));
         }
 
         [TearDown]

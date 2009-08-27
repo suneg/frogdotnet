@@ -63,6 +63,8 @@
     <Compile Include="Conditions\EndsWithCondition.cs" />
     <Compile Include="Conditions\StartsWithCondition.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="IScalarExpression.cs" />
+    <Compile Include="Scalar.cs" />
     <Compile Include="Syntax\Field.cs" />
     <Compile Include="Syntax\Order.cs" />
     <Compile Include="SqlServerConnection.cs" />

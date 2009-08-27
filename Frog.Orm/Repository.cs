@@ -137,6 +137,11 @@ namespace Frog.Orm
             return Transaction.ExecuteRaw<T>(rawSqlStatement);
         }
 
+        protected object GetScalar(IScalarExpression scalarExpression)
+        {
+            return Transaction.GetScalar(scalarExpression);
+        }
+
         private ITransaction Transaction
         {
             get

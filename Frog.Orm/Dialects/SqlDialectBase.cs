@@ -232,5 +232,31 @@ namespace Frog.Orm.Dialects
         {
             return "SELECT @@IDENTITY";
         }
+
+        public string SelectScalar(IScalarExpression expression)
+        {
+            string result = null;
+            string fieldName = expression.FieldName;
+
+            if (fieldName != "*")
+                fieldName = String.Format("[{0}]", fieldName);
+
+            if(expression is ScalarCountExpression)
+            {
+                result = String.Format("SELECT COUNT({0}) FROM [{1}]", fieldName, expression.SourceName);
+            }
+            if(expression is ScalarAverageExpression)
+            {
+                result = String.Format("SELECT AVG({0}) FROM [{1}]", fieldName, expression.SourceName);
+            }
+
+            if (expression.HasCondition)
+                result += String.Format(" WHERE {0}", GetWhereClause(expression.Condition));
+
+            if(result != null)
+                return result;
+
+            throw new InvalidOperationException(String.Format("Unsupported scalar expression ({0})", expression.GetType().FullName));
+        }
     }
 }

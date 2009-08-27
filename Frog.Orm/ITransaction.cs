@@ -22,5 +22,6 @@ namespace Frog.Orm
         void Delete(object instance);
         void DeleteWhere<T>(ICondition condition);
         void DeleteAll<T>();
+        object GetScalar(IScalarExpression expression);
     }
 }

@@ -134,6 +134,11 @@ namespace Frog.Orm
             ExecuteNonQuery(delete);
         }
 
+        public object GetScalar(IScalarExpression expression)
+        {
+            return ExecuteScalar(dialect.SelectScalar(expression));
+        }
+
         public IEnumerable<T> ExecuteRaw<T>(string commandText)
         {
             var command = CreateCommand(commandText);
@@ -154,6 +159,12 @@ namespace Frog.Orm
         public void Commit()
         {
             transaction.Commit();
+        }
+
+        // TODO: This is an ugly method to expose...
+        public object GetScalar(string commandText)
+        {
+            return ExecuteScalar(commandText);
         }
 
         private static MappedTypeInfo GetTypeInfo(Type type)
