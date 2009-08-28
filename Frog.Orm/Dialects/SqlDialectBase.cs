@@ -249,6 +249,10 @@ namespace Frog.Orm.Dialects
             {
                 result = String.Format("SELECT AVG({0}) FROM [{1}]", fieldName, expression.SourceName);
             }
+            if (expression is ScalarSumExpression)
+            {
+                result = String.Format("SELECT SUM({0}) FROM [{1}]", fieldName, expression.SourceName);
+            }
 
             if (expression.HasCondition)
                 result += String.Format(" WHERE {0}", GetWhereClause(expression.Condition));

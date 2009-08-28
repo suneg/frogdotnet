@@ -18,6 +18,11 @@ namespace Frog.Orm
         {
             return new ScalarAverageExpression(fieldName, sourceName, condition);
         }
+
+        public static IScalarExpression Sum(string fieldName, string sourceName)
+        {
+            return new ScalarSumExpression(fieldName, sourceName, null);
+        }
     }
 
     public abstract class BaseScalarExpression : IScalarExpression
@@ -32,6 +37,16 @@ namespace Frog.Orm
             {
                 return Condition != null;
             }
+        }
+    }
+
+    public class ScalarSumExpression : BaseScalarExpression
+    {
+        public ScalarSumExpression(string fieldName, string sourceName, ICondition condition)
+        {
+            FieldName = fieldName;
+            SourceName = sourceName;
+            Condition = condition;
         }
     }
 

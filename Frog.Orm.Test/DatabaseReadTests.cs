@@ -107,6 +107,16 @@ namespace Frog.Orm.Test
                 Assert.That(repository.GetAverage(), Is.EqualTo(2));
             }
         }
+
+        [Test]
+        public void SumFieldUsingScalarResult()
+        {
+            using (connection)
+            {
+                var repository = new CustomRepositoryForScalarQueries(connection);
+                Assert.That(repository.GetSum(), Is.EqualTo(6));
+            }
+        }
     }
 
     internal class CustomRepositoryForScalarQueries : Repository
@@ -124,6 +134,11 @@ namespace Frog.Orm.Test
         public double GetAverage()
         {
             return Convert.ToDouble(GetScalar(Scalar.Average("Id","Sample")));
+        }
+
+        public int GetSum()
+        {
+            return Convert.ToInt32(GetScalar(Scalar.Sum("Id", "Sample")));
         }
     }
 
