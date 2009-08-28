@@ -28,6 +28,31 @@
             <h3>Update</h3>
             <h3>Delete</h3>
             
+            <h3>Scalar Queries</h3>
+            <div class="csharpcode">
+            <pre><span class="lnum">   1:  </span><span class="kwrd">public</span> <span class="kwrd">void</span> Test()</pre>
+            <pre><span class="lnum">   2:  </span>{</pre>
+            <pre><span class="lnum">   3:  </span>    <span class="kwrd">using</span>(var connection = <span class="kwrd">new</span> <span class="str">Connection</span>(<span class="str">"&lt;connection string&gt;"</span>);)</pre>
+            <pre><span class="lnum">   4:  </span>    {</pre>
+            <pre><span class="lnum">   5:  </span>        var repository = <span class="kwrd">new</span> <span class="str">OrderRepository</span>(connection)</pre>
+            <pre><span class="lnum">   6:  </span>        double totalSales = repository.GetTotalSales()</pre>
+            <pre><span class="lnum">   7:  </span>        </pre>
+            <pre><span class="lnum">   8:  </span>    }</pre>
+            <pre><span class="lnum">   9:  </span>}</pre>
+            <pre><span class="lnum">  10:  </span></pre>
+            <pre><span class="lnum">  11:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> OrderRepository : Repository</pre>
+            <pre><span class="lnum">  12:  </span>{</pre>
+            <pre><span class="lnum">  13:  </span>    <span class="kwrd">public </span>OrderRepository(<span class="str">IConnection</span> connection) : <span class="kwrd">base</span>(connection)</pre>
+            <pre><span class="lnum">  14:  </span>    {</pre>
+            <pre><span class="lnum">  15:  </span>    }</pre>
+            <pre><span class="lnum">  16:  </span>    </pre>
+            <pre><span class="lnum">  17:  </span>    <span class="kwrd">public</span> <span class="kwrd">double</span> GetTotalSales()</pre>
+            <pre><span class="lnum">  18:  </span>    {</pre>
+            <pre><span class="lnum">  19:  </span>        return <span class="kwrd">base</span>.GetScalar(<span class="str">Scalar</span>.Sum("OrderTotal", "Orders"));</pre>
+            <pre><span class="lnum">  20:  </span>    }</pre>
+            <pre><span class="lnum">  21:  </span>}</pre>
+            </div>
+            
             <br /><br /><br />
         </div>
         
