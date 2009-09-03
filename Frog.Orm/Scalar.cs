@@ -6,7 +6,12 @@ namespace Frog.Orm
     {
         public static IScalarExpression Count(string sourceName)
         {
-            return new ScalarCountExpression(sourceName);
+            return new ScalarCountExpression(sourceName, null);
+        }
+
+        public static IScalarExpression Count(string sourceName, ICondition condition)
+        {
+            return new ScalarCountExpression(sourceName, condition);
         }
 
         public static IScalarExpression Average(string fieldName, string sourceName)
@@ -18,10 +23,15 @@ namespace Frog.Orm
         {
             return new ScalarAverageExpression(fieldName, sourceName, condition);
         }
-
+        
         public static IScalarExpression Sum(string fieldName, string sourceName)
         {
             return new ScalarSumExpression(fieldName, sourceName, null);
+        }
+
+        public static IScalarExpression Sum(string fieldName, string sourceName, ICondition condition)
+        {
+            return new ScalarSumExpression(fieldName, sourceName, condition);
         }
     }
 
@@ -62,10 +72,11 @@ namespace Frog.Orm
 
     public class ScalarCountExpression : BaseScalarExpression
     {
-        public ScalarCountExpression(string sourceName)
+        public ScalarCountExpression(string sourceName, ICondition condition)
         {
-            SourceName = sourceName;
             FieldName = "*";
+            SourceName = sourceName;
+            Condition = condition;
         }
     }
 }

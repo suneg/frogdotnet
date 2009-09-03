@@ -249,5 +249,19 @@ namespace Frog.Orm.Test
 
             Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT AVG([Age]) FROM [People] WHERE ([Gender] = 'Male')"));
         }
+
+        [Test]
+        public void GetSumWithCondition()
+        {
+            var expression = Scalar.Sum("Age", "People", Field.Equals("Gender", "Female"));
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT SUM([Age]) FROM [People] WHERE ([Gender] = 'Female')"));
+        }
+
+        [Test]
+        public void GetCountWithCondition()
+        {
+            IScalarExpression expression = Scalar.Count("Entity", Field.Equals("Gender", "Unknown"));
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT COUNT(*) FROM [Entity] WHERE ([Gender] = 'Unknown')"));
+        }
     }
 }
