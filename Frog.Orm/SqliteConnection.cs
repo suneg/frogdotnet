@@ -9,7 +9,8 @@ namespace Frog.Orm
         private readonly SQLiteConnection connection;
         private readonly ISqlDialect dialect;
         private ITransaction currentTransaction;
-        
+        private IDataEnumerator dataEnumerator;
+
 
         public SqliteConnection(string connectionString)
         {
@@ -71,6 +72,20 @@ namespace Frog.Orm
         }
 
         public ISqlDialect Dialect { get { return dialect; } }
-        public DataEnumerator DataEnumerator { get; set; }
+        
+        public IDataEnumerator DataEnumerator
+        {
+            get
+            {
+                return dataEnumerator;
+            }
+            set
+            {
+                dataEnumerator = value;
+
+                if (currentTransaction != null)
+                    currentTransaction.InitializeDataEnumerator(dataEnumerator);
+            }
+        }
     }
 }

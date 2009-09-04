@@ -9,6 +9,7 @@ namespace Frog.Orm
         private readonly SqlConnection connection;
         private readonly ISqlDialect dialect;
         private ITransaction currentTransaction;
+        private IDataEnumerator dataEnumerator;
 
         public SqlServerConnection(string connectionString)
         {
@@ -48,11 +49,6 @@ namespace Frog.Orm
             currentTransaction = null;
         }
 
-        public ISqlDialect Dialect
-        {
-            get { return dialect; }
-        }
-
         /// <summary>
         /// Commit changes made in the current transaction
         /// </summary>
@@ -76,6 +72,24 @@ namespace Frog.Orm
             }
         }
 
-        public DataEnumerator DataEnumerator { get; set; }
+        public ISqlDialect Dialect
+        {
+            get { return dialect; }
+        }
+
+        public IDataEnumerator DataEnumerator
+        {
+            get
+            {
+                return dataEnumerator;
+            }
+            set
+            {
+                dataEnumerator = value;
+
+                if (currentTransaction != null)
+                    currentTransaction.InitializeDataEnumerator(dataEnumerator);
+            }
+        }
     }
 }

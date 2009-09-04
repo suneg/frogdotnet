@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -9,7 +8,6 @@ namespace Frog.Orm.Test.SqlServer
     public class TfSqlServerRead : DatabaseReadTests
     {
         private SchemaBuilder builder;
-        private SqlConnection setupConnection;
         private const string connectionString = @"Data Source=(local)\sqlexpress;initial catalog=frog;integrated security=sspi;";
 
         [TestFixtureSetUp]
@@ -21,15 +19,13 @@ namespace Frog.Orm.Test.SqlServer
         [SetUp]
         public void Setup()
         {
-            setupConnection = new SqlConnection(connectionString);
+            connection = new SqlServerConnection(connectionString);
 
-            builder = new SchemaBuilder(setupConnection);
+            builder = new SchemaBuilder(connection);
             builder.CreateTableFromType<Sample>();
             builder.CreateTableFromType<TypeWithEnumMember>();
             builder.CreateTableFromType<TypeWithGuidPrimaryKey>();
             builder.CreateViewFromType<Sample>("AllSamples");
-
-            connection = new SqlServerConnection(connectionString);
 
             var repository = new Repository(connection);
             repository.Create(new Sample());
@@ -48,21 +44,18 @@ namespace Frog.Orm.Test.SqlServer
             builder.RemoveTableFromType<TypeWithGuidPrimaryKey>();
             builder.RemoveView("AllSamples");
 
-            setupConnection.Close();
+            connection.CommitChanges();
             connection.Dispose();
         }
 
         [Test, Ignore("No support yet for GUID primary keys")]
         public void GetByGuidPrimaryKey()
         {
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                repository.Create(new TypeWithGuidPrimaryKey { PrimaryKey = new Guid("FE38313A-7B56-4b8a-A856-AB7346476DE1") });
+            var repository = new Repository(connection);
+            repository.Create(new TypeWithGuidPrimaryKey { PrimaryKey = new Guid("FE38313A-7B56-4b8a-A856-AB7346476DE1") });
 
-                var entity = repository.Get<TypeWithGuidPrimaryKey>(new Guid("FE38313A-7B56-4b8a-A856-AB7346476DE1"));
-                Assert.That(entity.PrimaryKey, Is.EqualTo("FE38313A-7B56-4b8a-A856-AB7346476DE1"));
-            }
+            var entity = repository.Get<TypeWithGuidPrimaryKey>(new Guid("FE38313A-7B56-4b8a-A856-AB7346476DE1"));
+            Assert.That(entity.PrimaryKey, Is.EqualTo("FE38313A-7B56-4b8a-A856-AB7346476DE1"));
         }
     }
 }

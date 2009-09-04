@@ -1,6 +1,4 @@
-﻿using System.Data.Common;
-using System.Data.SQLite;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Frog.Orm.Test.SQLite
 {
@@ -16,15 +14,13 @@ namespace Frog.Orm.Test.SQLite
         [SetUp]
         public void Setup()
         {
-            var memoryDbConnection = GetInMemorySqliteConnection();
+            connection = new SqliteConnection("Data Source=:memory:;version=3");
 
-            var builder = new SchemaBuilder(memoryDbConnection);
+            var builder = new SchemaBuilder(connection);
             builder.CreateTableFromType<Sample>();
             builder.CreateTableFromType<TypeWithEnumMember>();
             builder.CreateTableFromType<TypeWithGuidPrimaryKey>();
             builder.CreateViewFromType<Sample>("AllSamples");
-
-            connection = new SqliteConnection((SQLiteConnection)memoryDbConnection);
 
             var repository = new Repository(connection);
             repository.Create(new Sample());
@@ -34,12 +30,10 @@ namespace Frog.Orm.Test.SQLite
             repository.Create(new TypeWithEnumMember { ActualEnumValue = SampleEnum.B });
         }
 
-        private static DbConnection GetInMemorySqliteConnection()
+        [TearDown]
+        public void Teardown()
         {
-            var sqliteConnection = new SQLiteConnection("Data Source=:memory:;version=3");
-            sqliteConnection.Open();
-
-            return sqliteConnection;
+            connection.Dispose();
         }
     }
 }

@@ -7,26 +7,17 @@ namespace Frog.Orm.Test.SqlServer
     public class TfSqlServerWrite : DatabaseWriteTests
     {
         private SchemaBuilder builder;
-        private SqlConnection setupConnection;
         private const string connectionString = @"Data Source=(local)\sqlexpress;initial catalog=frog;integrated security=sspi;";
-
-        [TestFixtureSetUp]
-        public void Initialize()
-        {
-            //Configuration.Initialize("Frog.Orm.Test.dll.config");
-        }
 
         [SetUp]
         public void Setup()
         {
-            setupConnection = new SqlConnection(connectionString);
+            connection = new SqlServerConnection(connectionString);
 
-            builder = new SchemaBuilder(setupConnection);
+            builder = new SchemaBuilder(connection);
             builder.CreateTableFromType<Entity>();
             builder.CreateTableFromType<TypeWithEnumMember>();
             builder.CreateTableFromType<TypeWithBoolean>();
-
-            connection = new SqlServerConnection(connectionString);
         }
 
         [TearDown]
@@ -36,23 +27,20 @@ namespace Frog.Orm.Test.SqlServer
             builder.RemoveTableFromType<TypeWithEnumMember>();
             builder.RemoveTableFromType<TypeWithBoolean>();
 
-            setupConnection.Close();
+            connection.CommitChanges();
             connection.Dispose();
         }
 
         [Test, Explicit]
         public void Insert25000Rows()
         {
-            using(connection)
-            {
-                var repository = new Repository(connection);
+            var repository = new Repository(connection);
 
-                for (int i = 0; i < 25000; i++)
-                {
-                    var instance = new Entity();
-                    instance.Text = "Hello world " + i;
-                    repository.Create(instance);
-                }
+            for (int i = 0; i < 25000; i++)
+            {
+                var instance = new Entity();
+                instance.Text = "Hello world " + i;
+                repository.Create(instance);
             }
         }
     }

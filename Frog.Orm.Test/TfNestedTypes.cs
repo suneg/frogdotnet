@@ -17,13 +17,11 @@ namespace Frog.Orm.Test
         [SetUp]
         public void Setup()
         {
-            var memoryDbConnection = GetInMemorySqliteConnection();
+            connection = new SqliteConnection("Data Source=:memory:;version=3");
 
-            var builder = new SchemaBuilder(memoryDbConnection);
+            var builder = new SchemaBuilder(connection);
             builder.CreateTableFromType<OrderLine>();
             builder.CreateTableFromType<WebsiteOrder>();
-
-            connection = new SqliteConnection((SQLiteConnection)memoryDbConnection);
 
             var repository = new Repository(connection);
             repository.Create(new WebsiteOrder());
@@ -40,14 +38,6 @@ namespace Frog.Orm.Test
             
         }
 
-        private static DbConnection GetInMemorySqliteConnection()
-        {
-            var sqliteConnection = new SQLiteConnection("Data Source=:memory:;version=3");
-            sqliteConnection.Open();
-
-            return sqliteConnection;
-        }
-
         [Test]
         public void GetOrderAndOrderlines()
         {
@@ -56,7 +46,7 @@ namespace Frog.Orm.Test
                 var repository = new Repository(connection);
                 var order = repository.Get<WebsiteOrder>(1);
 
-                Assert.That(order.Orderlines.Count(), NUnit.Framework.SyntaxHelpers.Is.EqualTo(2));
+                Assert.That(order.Orderlines.Count(), Is.EqualTo(2));
             }
         }
     }

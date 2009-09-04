@@ -14,15 +14,12 @@ namespace Frog.Orm.Test
         {
             var entity = new Entity {Text = "hello world"};
 
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                var returnedObject = repository.Create(entity);
-                connection.CommitChanges();
+            var repository = new Repository(connection);
+            var returnedObject = repository.Create(entity);
+            connection.CommitChanges();
 
-                var storedEntity = repository.Get<Entity>(returnedObject.Id);
-                Assert.That(storedEntity.Text, Is.EqualTo("hello world"));
-            }
+            var storedEntity = repository.Get<Entity>(returnedObject.Id);
+            Assert.That(storedEntity.Text, Is.EqualTo("hello world"));
         }
 
         [Test]
@@ -30,18 +27,15 @@ namespace Frog.Orm.Test
         {
             var entity = new Entity();
 
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                entity = repository.Create(entity);
-                connection.CommitChanges();
+            var repository = new Repository(connection);
+            entity = repository.Create(entity);
+            connection.CommitChanges();
 
-                entity.Text = "hello everyone";
-                repository.Update(entity);
+            entity.Text = "hello everyone";
+            repository.Update(entity);
 
-                var updatedObject = repository.Get<Entity>(entity.Id);
-                Assert.That(updatedObject.Text, Is.EqualTo("hello everyone"));
-            }
+            var updatedObject = repository.Get<Entity>(entity.Id);
+            Assert.That(updatedObject.Text, Is.EqualTo("hello everyone"));
         }
 
         [Test]
@@ -49,46 +43,37 @@ namespace Frog.Orm.Test
         {
             var entity = new Entity();
 
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                entity = repository.Create(entity);
-                
-                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
+            var repository = new Repository(connection);
+            entity = repository.Create(entity);
+            
+            Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
 
-                repository.Remove(entity);
-                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(0));
-            }
+            repository.Remove(entity);
+            Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(0));
         }
 
         [Test]
         public void RemoveMultiple()
         {
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                CreateThreeEntities(repository);
+            var repository = new Repository(connection);
+            CreateThreeEntities(repository);
 
-                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(3));
+            Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(3));
 
-                repository.RemoveWhere<Entity>(Field.StartsWith("Text", "test"));
-                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
-            }
+            repository.RemoveWhere<Entity>(Field.StartsWith("Text", "test"));
+            Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(1));
         }
 
         [Test]
         public void RemoveAll()
         {
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                CreateThreeEntities(repository);
+            var repository = new Repository(connection);
+            CreateThreeEntities(repository);
 
-                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(3));
+            Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(3));
 
-                repository.RemoveAll<Entity>();
-                Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(0));
-            }
+            repository.RemoveAll<Entity>();
+            Assert.That(repository.GetAll<Entity>().Count(), Is.EqualTo(0));
         }
 
         private static void CreateThreeEntities(Repository repository)
@@ -105,79 +90,66 @@ namespace Frog.Orm.Test
         [Test]
         public void StoreTypeWithEnum()
         {
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                var entity = new TypeWithEnumMember();
-                entity.ActualEnumValue = SampleEnum.B;
+            var repository = new Repository(connection);
+            var entity = new TypeWithEnumMember();
+            entity.ActualEnumValue = SampleEnum.B;
 
-                repository.Create(entity);
-                var entities = repository.GetAll<TypeWithEnumMember>();
-                entities = entities.ToList();
+            repository.Create(entity);
+            var entities = repository.GetAll<TypeWithEnumMember>();
+            entities = entities.ToList();
 
-                Assert.That(entities.Count(), Is.EqualTo(1));
-                Assert.That(entities.First().ActualEnumValue, Is.EqualTo(SampleEnum.B));
-            }
+            Assert.That(entities.Count(), Is.EqualTo(1));
+            Assert.That(entities.First().ActualEnumValue, Is.EqualTo(SampleEnum.B));
         }
 
         [Test]
         public void StoreTypeWithBoolean()
         {
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                var entity = new TypeWithBoolean();
-                entity.FirstBooleanValue = true;
-                entity.LastBooleanValue = false;
+            var repository = new Repository(connection);
+            var entity = new TypeWithBoolean();
+            entity.FirstBooleanValue = true;
+            entity.LastBooleanValue = false;
 
-                repository.Create(entity);
-                var entities = repository.GetAll<TypeWithBoolean>();
-                entities = entities.ToList();
+            repository.Create(entity);
+            var entities = repository.GetAll<TypeWithBoolean>();
+            entities = entities.ToList();
 
-                Assert.That(entities.Count(), Is.EqualTo(1));
+            Assert.That(entities.Count(), Is.EqualTo(1));
 
-                var storedEntity = entities.First();
-                Assert.That(storedEntity.FirstBooleanValue, Is.True);
-                Assert.That(storedEntity.LastBooleanValue, Is.False);
-            }
+            var storedEntity = entities.First();
+            Assert.That(storedEntity.FirstBooleanValue, Is.True);
+            Assert.That(storedEntity.LastBooleanValue, Is.False);
         }
 
         [Test]
         public void AttemptSqlInjectionWithApostropheDuringUpdate()
         {
-            
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                var entity = new Entity();
-                entity = repository.Create(entity);
+            var repository = new Repository(connection);
+            var entity = new Entity();
+            entity = repository.Create(entity);
 
-                entity.Text = "hello' everyone";
+            entity.Text = "hello' everyone";
 
-                repository.Update(entity);
-                connection.CommitChanges();
+            repository.Update(entity);
+            connection.CommitChanges();
 
-                var updatedObject = repository.Get<Entity>(entity.Id);
-                Assert.That(updatedObject.Text, Is.EqualTo("hello' everyone"));
-            }
+            var updatedObject = repository.Get<Entity>(entity.Id);
+            Assert.That(updatedObject.Text, Is.EqualTo("hello' everyone"));
+        
         }
 
         [Test]
         public void AttemptSqlInjectionWithApostropheDuringInsert()
         {
+            var repository = new Repository(connection);
+            var entity = new Entity();
+            entity.Text = "hello' everyone";
+            entity = repository.Create(entity);
 
-            using (connection)
-            {
-                var repository = new Repository(connection);
-                var entity = new Entity();
-                entity.Text = "hello' everyone";
-                entity = repository.Create(entity);
+            connection.CommitChanges();
 
-                connection.CommitChanges();
-
-                var updatedObject = repository.Get<Entity>(entity.Id);
-                Assert.That(updatedObject.Text, Is.EqualTo("hello' everyone"));
-            }
+            var updatedObject = repository.Get<Entity>(entity.Id);
+            Assert.That(updatedObject.Text, Is.EqualTo("hello' everyone"));
         }
     }
 

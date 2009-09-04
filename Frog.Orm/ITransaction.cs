@@ -13,7 +13,8 @@ namespace Frog.Orm
         IEnumerable<T> GetMany<T>(string sourceName, ICondition condition);
         IEnumerable<T> GetWhere<T>(ICondition condition);
         IEnumerable<T> ExecuteRaw<T>(string sqlStatement);
-        
+        void ExecuteRaw(string sqlStatement);
+
         void Rollback();
         void Commit();
 
@@ -23,5 +24,9 @@ namespace Frog.Orm
         void DeleteWhere<T>(ICondition condition);
         void DeleteAll<T>();
         object GetScalar(IScalarExpression expression);
+
+        void InitializeDataEnumerator(IDataEnumerator dataEnumerator);
+
+        
     }
 }

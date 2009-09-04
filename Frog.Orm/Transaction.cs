@@ -13,9 +13,9 @@ namespace Frog.Orm
     {
         private readonly IDbTransaction transaction;
         private readonly ISqlDialect dialect;
-        private readonly IDataEnumerator dataEnumerator;
         private readonly ILog log;
-        private TypeMapper mapper;
+        private readonly TypeMapper mapper;
+        private IDataEnumerator dataEnumerator;
 
         public Transaction(IDbTransaction transaction, ISqlDialect dialect, IDataEnumerator dataEnumerator)
         {
@@ -139,10 +139,20 @@ namespace Frog.Orm
             return ExecuteScalar(dialect.SelectScalar(expression));
         }
 
+        public void InitializeDataEnumerator(IDataEnumerator dataEnumerator)
+        {
+            this.dataEnumerator = dataEnumerator;
+        }
+
         public IEnumerable<T> ExecuteRaw<T>(string commandText)
         {
             var command = CreateCommand(commandText);
             return dataEnumerator.GetEnumerator<T>(CreateLateBoundReader(command)); 
+        }
+
+        public void ExecuteRaw(string commandText)
+        {
+            ExecuteNonQuery(commandText);
         }
 
         /// <summary>

@@ -1,6 +1,4 @@
 using System;
-using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.Text;
@@ -9,33 +7,25 @@ namespace Frog.Orm.Test
 {
     internal class SchemaBuilder
     {
-        private readonly DbConnection connection;
+        private readonly IConnection connection;
 
-        public SchemaBuilder(DbConnection connection)
+        public SchemaBuilder(IConnection connection)
         {
             this.connection = connection;
-
-            if(connection.State != ConnectionState.Open)
-                connection.Open();
         }
 
         public void CreateTableFromType<T>()
         {
-            var command = connection.CreateCommand();
-
             var mapper = new TypeMapper();
-            var info = mapper.GetTypeInfo(typeof(T));
-
-            command.CommandType = CommandType.Text;
-            
+            var info = mapper.GetTypeInfo(typeof(T));            
 
             var cmd = new StringBuilder();
             cmd.AppendFormat("create table [{0}](", info.TableName);
 
-            if (connection.GetType() == typeof(SqlConnection))
+            if (connection is SqlServerConnection)
                 cmd.AppendFormat("id INTEGER identity");
 
-            if (connection.GetType() == typeof(SQLiteConnection))
+            if (connection is SqliteConnection)
                 cmd.AppendFormat("id INTEGER PRIMARY KEY AUTOINCREMENT");
 
             foreach (var column in info.Columns)
@@ -46,15 +36,14 @@ namespace Frog.Orm.Test
 
             cmd.Append(")");
 
-            command.CommandText = cmd.ToString();
-            command.ExecuteNonQuery();            
+            connection.Transaction.ExecuteRaw(cmd.ToString());
         }
 
         private string GetDbType(Type type)
         {
             var booleanTypeName = "bit";
 
-            if (this.connection.ConnectionString.Contains("sqlite"))
+            if (connection is SqliteConnection)
                 booleanTypeName = "boolean";
 
             if (type.IsEnum)
@@ -75,47 +64,33 @@ namespace Frog.Orm.Test
 
         public void CreateViewFromType<T>(string viewName)
         {
-            var command = connection.CreateCommand();
-
             var mapper = new TypeMapper();
             var info = mapper.GetTypeInfo(typeof(T));
-
-            command.CommandType = CommandType.Text;
-
 
             var cmd = new StringBuilder();
             cmd.AppendFormat("create view [{0}] as ", viewName);
             cmd.AppendFormat("select Id from [{0}]", info.TableName);
 
-            command.CommandText = cmd.ToString();
-            command.ExecuteNonQuery();
+            connection.Transaction.ExecuteRaw(cmd.ToString());
         }
 
         public void RemoveView(string viewName)
         {
-            var command = connection.CreateCommand();
-            command.CommandType = CommandType.Text;
-
             var cmd = new StringBuilder();
             cmd.AppendFormat("drop view [{0}]", viewName);
 
-            command.CommandText = cmd.ToString();
-            command.ExecuteNonQuery();
+            connection.Transaction.ExecuteRaw(cmd.ToString());
         }
 
         public void RemoveTableFromType<T>()
         {
-            var command = connection.CreateCommand();
-            command.CommandType = CommandType.Text;
-
             var mapper = new TypeMapper();
             var info = mapper.GetTypeInfo(typeof(T));
 
             var cmd = new StringBuilder();
             cmd.AppendFormat("drop table [{0}]", info.TableName);
 
-            command.CommandText = cmd.ToString();
-            command.ExecuteNonQuery();
+            connection.Transaction.ExecuteRaw(cmd.ToString());
         }
     }
 }

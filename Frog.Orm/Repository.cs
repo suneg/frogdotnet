@@ -137,6 +137,11 @@ namespace Frog.Orm
             return Transaction.ExecuteRaw<T>(rawSqlStatement);
         }
 
+        /// <summary>
+        /// Executes a statement that produces a single-cell result.
+        /// </summary>
+        /// <param name="scalarExpression"></param>
+        /// <returns>The single value returned by the database</returns>
         protected object GetScalar(IScalarExpression scalarExpression)
         {
             return Transaction.GetScalar(scalarExpression);
