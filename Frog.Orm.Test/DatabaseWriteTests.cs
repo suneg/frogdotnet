@@ -23,6 +23,22 @@ namespace Frog.Orm.Test
         }
 
         [Test]
+        public void StoreFast()
+        {
+            var repository = new Repository(connection);
+
+            var count = repository.GetAll<Entity>().Count();
+            Assert.AreEqual(count, 0);
+
+            var entity = new Entity { Text = "hello world" };
+            repository.CreateFast(entity);
+            connection.CommitChanges();
+
+            count = repository.GetAll<Entity>().Count();
+            Assert.AreEqual(count, 1);
+        }
+
+        [Test]
         public void UpdateInstance()
         {
             var entity = new Entity();

@@ -19,6 +19,7 @@ namespace Frog.Orm
         void Commit();
 
         T Create<T>(T obj);
+        void CreateFast(object instance);
         void Update(object instance);
         void Delete(object instance);
         void DeleteWhere<T>(ICondition condition);
@@ -26,7 +27,5 @@ namespace Frog.Orm
         object GetScalar(IScalarExpression expression);
 
         void InitializeDataEnumerator(IDataEnumerator dataEnumerator);
-
-        
     }
 }

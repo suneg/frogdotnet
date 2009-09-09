@@ -65,15 +65,8 @@ namespace Frog.Orm
 
         public T Create<T>(T instance)
         {
-            var typeInfo = mapper.GetTypeInfo(typeof (T));
-
-            var values = mapper.GetInstanceValues(instance);
-
-            if (typeInfo.HasPrimaryKey())
-                values.Remove(typeInfo.PrimaryKey);
-
-            var insert = dialect.Insert(typeInfo.TableName, values);
-            ExecuteNonQuery(insert, 1);
+            var typeInfo = mapper.GetTypeInfo(typeof(T));
+            CreateFast(instance, typeInfo);
 
             var identity = ExecuteScalar(dialect.SelectIdentity());
 
@@ -81,6 +74,23 @@ namespace Frog.Orm
                 mapper.SetValueOfPrimaryKey(instance, identity);
 
             return instance;
+        }
+
+        public void CreateFast(object instance)
+        {
+            var typeInfo = mapper.GetTypeInfo(instance.GetType());
+            CreateFast(instance, typeInfo);
+        }
+
+        private void CreateFast(object instance, MappedTypeInfo typeInfo)
+        {
+            var values = mapper.GetInstanceValues(instance);
+
+            if (typeInfo.HasPrimaryKey())
+                values.Remove(typeInfo.PrimaryKey);
+
+            var insert = dialect.Insert(typeInfo.TableName, values);
+            ExecuteNonQuery(insert, 1);
         }
 
         public void Update(object instance)

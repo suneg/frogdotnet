@@ -62,10 +62,24 @@ namespace Frog.Orm
 
         // TODO: public IEnumerable<T> GetWhere<T>(Condition, Order)
 
+        /// <summary>
+        /// Stores a new entity in the database, and attaches the new identity (primary key) to the object.
+        /// </summary>
+        /// <param name="obj"></param>
         public T Create<T>(T obj)
         {
             return Transaction.Create(obj);
         }
+
+        /// <summary>
+        /// Stores a new entity in the database, but does not fetch it's database identity. Useful for bulk-insert scenarios.
+        /// </summary>
+        /// <param name="obj"></param>
+        public void CreateFast(object obj)
+        {
+            Transaction.CreateFast(obj);
+        }
+
 
         /// <summary>
         /// Deletes a record in the database.

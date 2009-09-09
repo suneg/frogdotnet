@@ -28,16 +28,16 @@ a:link, a:visited
 
 #logo
 {
-    position:absolute;
+    position:relative;
     top:0px;
     right:0px;
+    float:right;
+    display:inline;
 }
 
 #logoContainer
 {
-    position:absolute;
     width:1000px;
-    padding-right:0px;
 }
 
 h1

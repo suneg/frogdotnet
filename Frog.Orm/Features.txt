@@ -1,6 +1,6 @@
 ﻿
-* EarlierThanCondition
-* LaterThanCondition
+* EarlierThanCondition (for comparing date/time)
+* LaterThanCondition (for comparing date/time)
 
 * Rename [Table(Name..] to [Entity(Source..]
 * Ability to mark mapping class as [ReadOnly] (cannot be used in insert, update or delete scenarios). [Entity(Table] vs. [ReadOnlyEntity(Source
@@ -8,10 +8,11 @@
 * Introduce DbDateTime class (with .Now, .Today, etc) for representing database time (as opposed to DateTime which is time on the application server)
 * Verify database against model (mapping classes) (maybe during initialization)
 
+* Ability to use stored procedures
+
 * Support for INSERT INTO on Oracle. They use a different auto increment approach.
 
-* FastRepository
-	- Inserts in fire-and-forget mode. New object identity is not automatically fetched. Usefull in many scenarios of inserting child-rows
+* Make all methods on Repository protected - forcing the use of custom domain-specific repositories.
 
 * Support PrimaryKeys of type long (bigint), int32, and guids. Verify both with sql server
 * Fetching of GUID columns
@@ -21,7 +22,7 @@
 
 * Row ordering
 	- Limit returned row count (e.g. TOP 200) 
-	- Multiple columns
+	- Multiple columns	(Idea: Order.Ascending("Date").Descending("CustomerName") )
 	- Single column - Done
 
 * Support for dynamic updates/inserts based on database functions, like getdate(). Scenario: CreatedDate and ModifiedDate on an entity.
@@ -31,28 +32,11 @@
 	
 * Introduce just-in-time binding to log4net.dll
 
-* DeleteAll - Done
-* DeleteWhere - Done
-* Rename Connection to SqlServerConnection - Done
-* Multiple views and one table could all return the same type? Solution: GetMany, GetSingle protected methods on base Repository - Done
-* Mapping of enums - Done
-* Mapping of booleans - Done
-* Logging - Done
 * Injection of required dependecies
 	- Repository allowing mapping classes to do lazy lookup in the database. (Needed for nested types) - Done
 	- Injection of something other than IRepository?
 	- What happens if the repository has been disposed when attempting lazy load?!?!?
 
-* How to elegantly run the test suite on multiple target databases? (sqlite, sql server, mysql, etc) - Done
-
-* AndCondition - Done
-* ContainsCondition - Done
-* StartsWithCondition - Done
-* EndsWithCondition - Done
-* GreaterThanCondition - Done
-* LowerThanCondition - Done
-* OrCondition - Done
-* NotCondition - Done
 
 * Sample Project
 	- Blog
