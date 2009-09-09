@@ -42,7 +42,7 @@
             There need not to be a complete match between what columns are available in a table, and your mapping definitions. In fact, your mapping classes are just telling the database what columns are needed
             for filling the objects. So if the user table has a Password column and a Birthday column in addition to the Name and Id column shown above, they will not be fetched in with this User mapping class.<br />
             <br />
-            Attempting to fetch a database row, and map it to the User class defined above will produce the following SQL command: "SELECT [Id],[Name] FROM [User]"<br />
+            Using Frog.NET to fetch a database row, and map it to the User class defined above will produce the following SQL command: "SELECT [Id],[Name] FROM [User]"<br />
             <br />
             Mapping classes are usually used to fetch from database tables, but they can instead be using database views, in which case they will only work for read-only scenarios.
             While in most situations you want your mapping class to be named like your table (or view), you can override this default behaviour by setting the Name parameter of the [Table] attribute.<br />
@@ -82,7 +82,7 @@
             data types. To accomodate this you can use the [RequiredDependency] attribute on you mapping classes. This allows you to implement <i>late-fetching</i> of 
             data rows, when the application requires it. Note that Frog.NET does NOT magically load a full object graph like other O/R mappers - Instead 
             you have to implement just-in-time fetching like in the example below. The [RequiredDependency] attribute instructs the framework to provide a base 
-            Repository upon the initialization of the object<br />
+            Repository upon the initialization of the entity object<br />
             
             <!-- code formatted by http://manoli.net/csharpformat/ -->
             <div class="csharpcode">
@@ -104,8 +104,12 @@
             <pre><span class="lnum">  16:  </span>}</pre>
             </div>
             
-            As the example above indicates, you should never (due to performance) iterate over a list of persons and call Children property. If your application should need to fetch all children, you could instead
-            implement a GetAllChildren() method on a <a href="Repositories.htm#CustomRepositories">PersonRepository</a>.
+            When you retrieve a Person from the database, you can call the Children property which will then fetch all associated Child entities.<br />
+            <br />
+            As the example above indicates, you should never (due to performance) iterate over a list of persons and call Children property on each of them. This will result in Number_Of_Children + 1 database queries, potentially making your application painfully slow.
+            If your application should need to fetch all children, you could instead implement a GetAllChildren() method on a <a href="Repositories.htm#CustomRepositories">PersonRepository</a>.<br />
+            <br />
+            If in doubt, you can use the <a href="Logging.htm">log file</a> to investigate exactly what queries has being executed.
         </div>
         
         <div class="footer">

@@ -12,7 +12,8 @@
 
 * Support for INSERT INTO on Oracle. They use a different auto increment approach.
 
-* Make all methods on Repository protected - forcing the use of custom domain-specific repositories.
+* Make all methods on Repository protected - forcing the use of custom domain-specific repositories / OR ... make all methods public allowing people to use custom 
+repositories or the generic repository.
 
 * Support PrimaryKeys of type long (bigint), int32, and guids. Verify both with sql server
 * Fetching of GUID columns
