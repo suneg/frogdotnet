@@ -115,6 +115,9 @@ namespace Frog.Orm
             if (targetType.IsEnum)
                 return Convert.ToInt32(value);
 
+            if (targetType.Equals(typeof(Double)))
+                return Convert.ToDouble(value);
+
             if (targetType.Equals(typeof(Decimal)))
                 return Convert.ToDecimal(value);
 

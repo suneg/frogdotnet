@@ -20,6 +20,8 @@ namespace Frog.Orm.Test.SQLite
             builder.CreateTableFromType<Sample>();
             builder.CreateTableFromType<TypeWithEnumMember>();
             builder.CreateTableFromType<TypeWithGuidPrimaryKey>();
+            builder.CreateTableFromType<TypeWithFractionMembers>();
+
             builder.CreateViewFromType<Sample>("AllSamples");
 
             var repository = new Repository(connection);
@@ -28,6 +30,7 @@ namespace Frog.Orm.Test.SQLite
             repository.Create(new Sample());
 
             repository.Create(new TypeWithEnumMember { ActualEnumValue = SampleEnum.B });
+            repository.Create(new TypeWithFractionMembers() { DoubleValue = 1.2345678, DecimalValue = (decimal)2.345678 });
         }
 
         [TearDown]

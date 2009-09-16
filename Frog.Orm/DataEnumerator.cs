@@ -41,8 +41,10 @@ namespace Frog.Orm
                                 {
                                     var name = TypeMapper.GetColumnName(x.Property);
 
-                                    x.Property.SetValue(instance, 
-                                            TypeMapper.MapDbValueToDotNet(x.Property.PropertyType, reader.GetValue(reader.GetOrdinal(name))), null);
+                                    var ordinal = reader.GetOrdinal(name);
+                                    var value = reader.GetValue(ordinal);
+
+                                    x.Property.SetValue(instance, TypeMapper.MapDbValueToDotNet(x.Property.PropertyType, value), null);
                                 });
 
                     yield return instance;

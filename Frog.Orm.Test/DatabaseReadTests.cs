@@ -57,6 +57,16 @@ namespace Frog.Orm.Test
             Assert.That(entities.First().ActualEnumValue, Is.EqualTo(SampleEnum.B));
         }
 
+        [Test]
+        public void GetTypeWithFractionTypes()
+        {
+            var repository = new Repository(connection);
+            var entities = repository.GetAll<TypeWithFractionMembers>();
+            var first = entities.First();
+            Assert.That(first.DoubleValue, Is.EqualTo(1.2345678));
+            //Assert.That(first.DecimalValue, Is.EqualTo(2.345678));    // TODO: Can't get decimals to work with Sqlite
+        }
+
         [Test, Ignore("Not possible yet - We need a working solution for this issue")]
         public void IterateResultTwice()
         {
@@ -120,6 +130,16 @@ namespace Frog.Orm.Test
     {
         [PrimaryKey]
         public Guid PrimaryKey { get; set; }
+    }
+
+    [Table]
+    internal class TypeWithFractionMembers
+    {
+        [Column]
+        public double DoubleValue { get; set; }
+
+        [Column]
+        public decimal DecimalValue { get; set; }
     }
 
     [Table]

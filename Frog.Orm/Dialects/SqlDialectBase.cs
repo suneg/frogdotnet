@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Frog.Orm.Conditions;
@@ -99,7 +100,11 @@ namespace Frog.Orm.Dialects
             }
             if (value is Decimal)
             {
-                return String.Format("{0}", value);
+                return String.Format(CultureInfo.CreateSpecificCulture("en-us"), "{0:G}", value);
+            }
+            if (value is Double)
+            {
+                return String.Format(CultureInfo.CreateSpecificCulture("en-us"), "{0:G}", value);
             }
             if (value is Boolean)
             {

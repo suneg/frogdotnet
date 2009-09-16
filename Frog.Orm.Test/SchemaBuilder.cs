@@ -1,6 +1,4 @@
 using System;
-using System.Data.SqlClient;
-using System.Data.SQLite;
 using System.Text;
 
 namespace Frog.Orm.Test
@@ -42,9 +40,13 @@ namespace Frog.Orm.Test
         private string GetDbType(Type type)
         {
             var booleanTypeName = "bit";
+            var decimalTypeName = "decimal";
 
             if (connection is SqliteConnection)
+            {
+                decimalTypeName = "real";
                 booleanTypeName = "boolean";
+            }
 
             if (type.IsEnum)
                 return "integer";
@@ -53,11 +55,13 @@ namespace Frog.Orm.Test
             if (type == typeof(Int32))
                 return "integer";
             if (type == typeof(Decimal))
-                return "decimal";
+                return decimalTypeName;
             if (type == typeof(Int64))
                 return "long";
             if (type == typeof(String))
                 return "nvarchar(64)";
+            if (type == typeof(Double))
+                return "float";
 
             throw new NotImplementedException(String.Format("Unknown type. Cannot map '{0}' to database type", type.FullName));
         }

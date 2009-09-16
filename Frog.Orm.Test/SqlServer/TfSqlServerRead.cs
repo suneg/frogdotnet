@@ -25,6 +25,7 @@ namespace Frog.Orm.Test.SqlServer
             builder.CreateTableFromType<Sample>();
             builder.CreateTableFromType<TypeWithEnumMember>();
             builder.CreateTableFromType<TypeWithGuidPrimaryKey>();
+            builder.CreateTableFromType<TypeWithFractionMembers>();
             builder.CreateViewFromType<Sample>("AllSamples");
 
             var repository = new Repository(connection);
@@ -33,18 +34,13 @@ namespace Frog.Orm.Test.SqlServer
             repository.Create(new Sample());
 
             repository.Create(new TypeWithEnumMember {ActualEnumValue = SampleEnum.B});
-            connection.CommitChanges();
+            repository.Create(new TypeWithFractionMembers() {DoubleValue = 1.2345678, DecimalValue = (decimal)2.345678 });
         }
 
         [TearDown]
         public void Teardown()
         {
-            builder.RemoveTableFromType<Sample>();
-            builder.RemoveTableFromType<TypeWithEnumMember>();
-            builder.RemoveTableFromType<TypeWithGuidPrimaryKey>();
-            builder.RemoveView("AllSamples");
-
-            connection.CommitChanges();
+            connection.Rollback();
             connection.Dispose();
         }
 
