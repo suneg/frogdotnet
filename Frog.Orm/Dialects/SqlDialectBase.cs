@@ -235,7 +235,7 @@ namespace Frog.Orm.Dialects
 
         public virtual string SelectIdentity()
         {
-            return "SELECT @@IDENTITY";
+            return "SELECT SCOPE_IDENTITY()";
         }
 
         public string SelectScalar(IScalarExpression expression)

@@ -3,7 +3,7 @@
 * LaterThanCondition (for comparing date/time)
 
 * Rename [Table(Name..] to [Entity(Source..]
-* Ability to mark mapping class as [ReadOnly] (cannot be used in insert, update or delete scenarios). [Entity(Table] vs. [ReadOnlyEntity(Source
+* Ability to mark mapping class as [ReadOnly] (cannot be used in insert, update or delete scenarios). [Entity/Table] vs. [ReadOnlyEntity(Source)] - usefull when fetching data from views.
 
 * Introduce DbDateTime class (with .Now, .Today, etc) for representing database time (as opposed to DateTime which is time on the application server)
 * Verify database against model (mapping classes) (maybe during initialization)
@@ -13,7 +13,8 @@
 * Support for INSERT INTO on Oracle. They use a different auto increment approach.
 
 * Make all methods on Repository protected - forcing the use of custom domain-specific repositories / OR ... make all methods public allowing people to use custom 
-repositories or the generic repository.
+repositories or the generic repository (has the unfortunate side effect that all methods will also be public on custom repositories)
+OR ...split Repository into BaseRepository and GenericRepository, where BaseRepository has protected methods, and GenericRepository has public accessors for the protected methods.
 
 * Support PrimaryKeys of type long (bigint), int32, and guids. Verify both with sql server
 * Fetching of GUID columns

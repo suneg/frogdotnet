@@ -87,7 +87,7 @@ namespace Frog.Orm.Test
 
             Expect.Call(connection.CreateCommand()).Return(command);
             Expect.Call(dbTransaction.Connection).Return(connection);
-            Expect.Call(command.CommandText).SetPropertyWithArgument("SELECT @@IDENTITY");
+            Expect.Call(command.CommandText).SetPropertyWithArgument("SELECT SCOPE_IDENTITY()");
             Expect.Call(command.Transaction).SetPropertyWithArgument(dbTransaction);
             Expect.Call(command.ExecuteScalar()).Return(14);
 
@@ -154,8 +154,6 @@ namespace Frog.Orm.Test
             var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
             transaction.Update(person);
         }
-
-        // TODO: Add test that uses DeleteWhere()
 
         [Test]
         public void DeleteWhere()
