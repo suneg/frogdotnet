@@ -12,6 +12,10 @@
 
 * Support for INSERT INTO on Oracle. They use a different auto increment approach.
 
+* Support for other db vendors
+	* Oracle
+	* MySQL
+
 * Make all methods on Repository protected - forcing the use of custom domain-specific repositories / OR ... make all methods public allowing people to use custom 
 repositories or the generic repository (has the unfortunate side effect that all methods will also be public on custom repositories)
 OR ...split Repository into BaseRepository and GenericRepository, where BaseRepository has protected methods, and GenericRepository has public accessors for the protected methods.
