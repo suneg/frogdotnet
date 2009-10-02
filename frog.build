@@ -26,7 +26,7 @@
     <copy todir="Drop">
       <fileset basedir="Lib">
         <include name="*.dll" />
-        <exclude name="System.Data.SQLite.dll" />
+        <!--<exclude name="System.Data.SQLite.dll" />-->
       </fileset>
     </copy>
 
@@ -82,6 +82,7 @@
       <fileset basedir="Drop" prefix="bin">
         <include name="**/Frog.Orm.dll" />
         <include name="**/log4net.dll" />
+        <include name="**/System.Data.SQLite.dll" />
       </fileset>
       <fileset basedir="Documentation" prefix="doc">
         <include name="**/*" />
