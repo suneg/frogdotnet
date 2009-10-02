@@ -26,7 +26,7 @@
     <copy todir="Drop">
       <fileset basedir="Lib">
         <include name="*.dll" />
-        <!--<exclude name="System.Data.SQLite.dll" />-->
+        <exclude name="System.Data.SQLite.dll" />
       </fileset>
     </copy>
 
@@ -37,7 +37,7 @@
         </fileset>
       </copy>
     </if>
-    <if test="${target.architecture=='x86'}">
+    <if test="${not (property::get-value('target.architecture')=='x64')}">
       <copy todir="Drop">
         <fileset basedir="Lib">
           <include name="System.Data.SQLite.dll" />
