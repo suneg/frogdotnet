@@ -109,7 +109,7 @@
             As the example above indicates, you should never (due to performance) iterate over a list of persons and call Children property on each of them. This will result in Number_Of_Children + 1 database queries, potentially making your application painfully slow.
             If your application should need to fetch all children, you could instead implement a GetAllChildren() method on a <a href="Repositories.htm#CustomRepositories">PersonRepository</a>.<br />
             <br />
-            If in doubt, you can use the <a href="Logging.htm">log file</a> to investigate exactly what queries has being executed.
+            If in doubt, you can use the <a href="Logging.htm">log file</a> to investigate exactly what queries has been executed.
         </div>
         
         <div class="footer">
