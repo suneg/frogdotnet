@@ -7,26 +7,46 @@ namespace Frog.Orm
 {
     public class TypeMapper
     {
+        private static Dictionary<Type, MappedTypeInfo> typeInfoCache;
+        private static Dictionary<Type, List<PropertyInfo>> propertyInfoCache;
+
+        public TypeMapper()
+        {
+            if(typeInfoCache == null)
+                typeInfoCache = new Dictionary<Type, MappedTypeInfo>();
+
+            if (propertyInfoCache == null)
+                propertyInfoCache = new Dictionary<Type, List<PropertyInfo>>();
+        }
+
         public MappedTypeInfo GetTypeInfo(Type type)
         {
-            var typeInfo = new MappedTypeInfo();
+            MappedTypeInfo typeInfo;
 
-            var attribute = ((TableAttribute)Attribute.GetCustomAttribute(type, typeof(TableAttribute)));
+            if(!typeInfoCache.TryGetValue(type, out typeInfo))
+            {
+                typeInfo = new MappedTypeInfo();
 
-            if(attribute == null)
-                throw new MappingException(String.Format("Cannot map type '{0}'. It has no [Table] annotation", type.Name));
+                var attribute = ((TableAttribute)Attribute.GetCustomAttribute(type, typeof(TableAttribute)));
 
-            var overriddenName = attribute.Name;
-            var primaryKey = GetPrimaryKey(type);
+                if (attribute == null)
+                    throw new MappingException(String.Format("Cannot map type '{0}'. It has no [Table] annotation", type.Name));
 
-            typeInfo.TableName = overriddenName ?? type.Name;
-            typeInfo.PrimaryKey = primaryKey != null ? primaryKey.Name : null;
+                var overriddenName = attribute.Name;
+                var primaryKey = GetPrimaryKey(type);
 
-            if(primaryKey != null)
-                typeInfo.Columns.Add(primaryKey);
+                typeInfo.TableName = overriddenName ?? type.Name;
+                typeInfo.PrimaryKey = primaryKey != null ? primaryKey.Name : null;
 
-            typeInfo.Columns.AddRange(GetColumns(type));
+                if (primaryKey != null)
+                    typeInfo.Columns.Add(primaryKey);
 
+                typeInfo.Columns.AddRange(GetColumns(type));
+
+                // Missing thread safety in adding typeinfo to cache.
+                typeInfoCache.Add(type, typeInfo);    
+            }
+            
             return typeInfo;
         }
 
@@ -88,15 +108,25 @@ namespace Frog.Orm
         {
             var result = new Dictionary<string, object>();
 
-            var props = from c in instance.GetType().GetProperties()
-                        where
-                            Attribute.GetCustomAttribute(c, typeof (ColumnAttribute)) != null ||
-                            Attribute.GetCustomAttribute(c, typeof (PrimaryKeyAttribute)) != null
-                        select new {Name = GetColumnName(c), Value = c.GetValue(instance, null) };
+            var type = instance.GetType();
 
+            List<PropertyInfo> properties;
 
-            props.ToList().ForEach(x => result.Add(x.Name, x.Value));
+            if(!propertyInfoCache.TryGetValue(type, out properties))
+            {
+                properties = new List<PropertyInfo>();
 
+                foreach(var property in type.GetProperties())
+                {
+                    if(Attribute.GetCustomAttribute(property, typeof(ColumnAttribute)) != null ||
+                        Attribute.GetCustomAttribute(property, typeof(PrimaryKeyAttribute)) != null)
+                        properties.Add(property);
+                }
+
+                propertyInfoCache.Add(type, properties);
+            }
+
+            properties.ToList().ForEach(x => result.Add(GetColumnName(x), x.GetValue(instance, null)));
             return result;
         }
 
