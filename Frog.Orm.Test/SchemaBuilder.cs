@@ -6,6 +6,7 @@ namespace Frog.Orm.Test
     internal class SchemaBuilder
     {
         private readonly IConnection connection;
+        private TypeMapper mapper;
 
         public SchemaBuilder(IConnection connection)
         {
@@ -14,8 +15,8 @@ namespace Frog.Orm.Test
 
         public void CreateTableFromType<T>()
         {
-            var mapper = new TypeMapper();
-            var info = mapper.GetTypeInfo(typeof(T));            
+            mapper = new TypeMapper();
+            var info = this.mapper.GetTypeInfo(typeof(T));            
 
             var cmd = new StringBuilder();
             cmd.AppendFormat("create table [{0}](", info.TableName);
@@ -28,8 +29,8 @@ namespace Frog.Orm.Test
 
             foreach (var column in info.Columns)
             {
-                if (column.Name != info.PrimaryKey)
-                    cmd.AppendFormat(",{0} {1}", column.Name, GetDbType(column.Type));
+                if (!info.HasPrimaryKey() || column.Name != info.PrimaryKey.Name)
+                    cmd.AppendFormat(",{0} {1}", column.Name, GetDbType(column.Info.PropertyType));
             }
 
             cmd.Append(")");
@@ -68,7 +69,6 @@ namespace Frog.Orm.Test
 
         public void CreateViewFromType<T>(string viewName)
         {
-            var mapper = new TypeMapper();
             var info = mapper.GetTypeInfo(typeof(T));
 
             var cmd = new StringBuilder();
@@ -88,7 +88,6 @@ namespace Frog.Orm.Test
 
         public void RemoveTableFromType<T>()
         {
-            var mapper = new TypeMapper();
             var info = mapper.GetTypeInfo(typeof(T));
 
             var cmd = new StringBuilder();

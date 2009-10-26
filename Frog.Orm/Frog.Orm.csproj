@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseRepository.cs" />
     <Compile Include="Conditions\AndCondition.cs" />
     <Compile Include="Conditions\ColumnCondition.cs" />
     <Compile Include="Conditions\ContainsCondition.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Dialects\SqliteDialect.cs" />
     <Compile Include="TableAttribute.cs" />
     <Compile Include="Transaction.cs" />
+    <Compile Include="TypeCache.cs" />
     <Compile Include="TypeMapper.cs" />
   </ItemGroup>
   <ItemGroup>

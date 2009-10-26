@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TfSecondTypeMapper.cs" />
     <Compile Include="SchemaBuilder.cs" />
     <Compile Include="SQLite\TfSqliteWrite.cs" />
     <Compile Include="SQLite\TfSqliteRead.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="DatabaseReadTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TfTransaction.cs" />
+    <Compile Include="TfTypeCache.cs" />
     <Compile Include="TfTypeMapper.cs" />
   </ItemGroup>
   <ItemGroup>

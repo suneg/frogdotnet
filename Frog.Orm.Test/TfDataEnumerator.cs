@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using Frog.Orm.Conditions;
-using Frog.Orm.Test;
 using NUnit.Framework;
 using System.Linq;
 using Is=NUnit.Framework.SyntaxHelpers.Is;
@@ -62,7 +61,7 @@ namespace Frog.Orm.Test
         public void EnumerateRowsWithRequiredDependencyAttributeOnMappingClass()
         {
             table.AddColumn("Name", typeof(String));
-            table.AddRow("Deming");
+            table.AddRow("Edwards W. Deming");
             
 
             var samples = enumerator.GetEnumerator<SingleColumnWithRequiredDependency>(table.GetDataReader());
@@ -70,7 +69,7 @@ namespace Frog.Orm.Test
             var list = samples.ToList();
             Assert.That(list.Count, Is.EqualTo(1));
 
-            Assert.That(list[0].Name, Is.EqualTo("Deming"));
+            Assert.That(list[0].Name, Is.EqualTo("Edwards W. Deming"));
             Assert.That(list[0].TheSame, Is.EqualTo(mockRepository));
         }
     }
@@ -170,10 +169,21 @@ namespace Frog.Orm.Test
             throw new System.NotImplementedException();
         }
 
+        public void CreateFast<T>(T obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Remove(object obj)
         {
             throw new System.NotImplementedException();
         }
+
+        public void RemoveAll<T>()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void RemoveWhere<T>(ICondition condition)
         {
             throw new System.NotImplementedException();

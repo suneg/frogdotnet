@@ -82,12 +82,12 @@ namespace Frog.Orm
             CreateFast(instance, typeInfo);
         }
 
-        private void CreateFast(object instance, MappedTypeInfo typeInfo)
+        private void CreateFast(object instance, SecondMappedTypeInfo typeInfo)
         {
             var values = mapper.GetInstanceValues(instance);
 
             if (typeInfo.HasPrimaryKey())
-                values.Remove(typeInfo.PrimaryKey);
+                values.Remove(typeInfo.PrimaryKey.Name);
 
             var insert = dialect.Insert(typeInfo.TableName, values);
             ExecuteNonQuery(insert, 1);
@@ -100,10 +100,10 @@ namespace Frog.Orm
             var values = mapper.GetInstanceValues(instance);
 
             if (typeInfo.HasPrimaryKey())
-                values.Remove(typeInfo.PrimaryKey);
+                values.Remove(typeInfo.PrimaryKey.Name);
 
             var primaryKey = Convert.ToInt32(mapper.GetValueOfPrimaryKey(instance));
-            var condition = Field.Equals(typeInfo.PrimaryKey, primaryKey);
+            var condition = Field.Equals(typeInfo.PrimaryKey.Name, primaryKey);
 
             var insert = dialect.UpdateWhere(typeInfo.TableName, condition, values);
             ExecuteNonQuery(insert, 1);
@@ -115,7 +115,7 @@ namespace Frog.Orm
 
             var primaryKey = Convert.ToInt32(mapper.GetValueOfPrimaryKey(instance));
 
-            var condition = Field.Equals(typeInfo.PrimaryKey, primaryKey);
+            var condition = Field.Equals(typeInfo.PrimaryKey.Name, primaryKey);
             var delete = dialect.DeleteWhere(typeInfo.TableName, condition);
             ExecuteNonQuery(delete, 1);
         }
@@ -187,9 +187,8 @@ namespace Frog.Orm
             return ExecuteScalar(commandText);
         }
 
-        private static MappedTypeInfo GetTypeInfo(Type type)
+        private SecondMappedTypeInfo GetTypeInfo(Type type)
         {
-            var mapper = new TypeMapper();
             return mapper.GetTypeInfo(type);
         }
 
@@ -207,16 +206,16 @@ namespace Frog.Orm
             return dataEnumerator.GetEnumerator<T>(command.ExecuteReader()).First();
         }
 
-        private static ICondition CreatePrimaryKeyCondition(MappedTypeInfo typeInfo, object primaryKeyValue)
+        private static ICondition CreatePrimaryKeyCondition(SecondMappedTypeInfo typeInfo, object primaryKeyValue)
         {
             ICondition condition;
 
             if (primaryKeyValue is Int32)
-                condition = Field.Equals(typeInfo.PrimaryKey, (int)primaryKeyValue);
+                condition = Field.Equals(typeInfo.PrimaryKey.Name, (int)primaryKeyValue);
             else if (primaryKeyValue is Int64)
-                condition = Field.Equals(typeInfo.PrimaryKey, (long)primaryKeyValue);
+                condition = Field.Equals(typeInfo.PrimaryKey.Name, (long)primaryKeyValue);
             else if (primaryKeyValue is Guid)
-                condition = Field.Equals(typeInfo.PrimaryKey, (Guid)primaryKeyValue);
+                condition = Field.Equals(typeInfo.PrimaryKey.Name, (Guid)primaryKeyValue);
             else
                 throw new NotSupportedException(
                     String.Format("Object of type {0} cannot be used as primary key", primaryKeyValue.GetType().FullName));

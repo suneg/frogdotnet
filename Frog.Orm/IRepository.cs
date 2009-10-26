@@ -11,7 +11,9 @@ namespace Frog.Orm
         IEnumerable<T> GetAll<T>();
         IEnumerable<T> GetWhere<T>(ICondition condition);
         T Create<T>(T obj);
+        void CreateFast<T>(T obj);
         void Remove(object obj);
+        void RemoveAll<T>();
         void RemoveWhere<T>(ICondition condition);
         void Update(object obj);
     }

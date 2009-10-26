@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Frog.Orm.Test.SqlServer
 {
