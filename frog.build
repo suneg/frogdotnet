@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" name="Syntase Wizer" default="build" basedir=".">
-  <description>Syntase Wizer Project</description>
+  <description>Frog.NET build script</description>
   <property name="debug" value="true" overwrite="false" />
   <property name="nant.settings.currentframework" value="net-3.5"/>
   <property name="target.architecture" value="x86"/>
