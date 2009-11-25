@@ -13,7 +13,7 @@ namespace Frog.Orm
             typeCache = new TypeCache();
         }
 
-        public SecondMappedTypeInfo GetTypeInfo(Type type)
+        public MappedTypeInfo GetTypeInfo(Type type)
         {
             return typeCache.GetTypeInfo(type);
         }

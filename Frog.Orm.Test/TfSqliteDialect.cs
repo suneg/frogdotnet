@@ -21,5 +21,12 @@ namespace Frog.Orm.Test
             var dialect = new SqliteDialect();
             Assert.That(dialect.Select("Samples", Field.List("Id")), Is.EqualTo("SELECT Id FROM [Samples]"));
         }
+
+        [Test]
+        public void SelectColumnsUnquotedWithWhereClause()
+        {
+            var dialect = new SqliteDialect();
+            Assert.That(dialect.SelectWhere("Samples", Field.List("Id", "Size"), Field.Equals("Size", 5)), Is.EqualTo("SELECT Id,Size FROM [Samples] WHERE ([Size] = 5)"));
+        }
     }
 }

@@ -32,6 +32,8 @@ namespace Frog.Orm
                     foreach(var column in info.Columns)
                     {
                         var ordinal = reader.GetOrdinal(column.Name);
+
+                        // TODO: if ordinal = -1 then throw NoMatchingColumnFound
                         var value = reader.GetValue(ordinal);
 
                         column.Info.SetValue(instance, TypeMapper.MapDbValueToDotNet(column.Info.PropertyType, value), null);

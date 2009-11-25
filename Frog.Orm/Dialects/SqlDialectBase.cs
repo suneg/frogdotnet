@@ -201,7 +201,7 @@ namespace Frog.Orm.Dialects
             throw new InvalidOperationException(String.Format("Unsupported Condition ({0})", condition.GetType().FullName));
         }
 
-        private static string GetOrderClause(Order order)
+        public static string GetOrderClause(Order order)
         {
             var builder = new StringBuilder();
 

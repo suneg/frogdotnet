@@ -8,17 +8,17 @@ namespace Frog.Orm
 {
     public class TypeCache
     {
-        private static Dictionary<Type, SecondMappedTypeInfo> cache;
+        private static Dictionary<Type, MappedTypeInfo> cache;
 
         public TypeCache()
         {
             if(cache == null)
-                cache = new Dictionary<Type, SecondMappedTypeInfo>();
+                cache = new Dictionary<Type, MappedTypeInfo>();
         }
 
-        private SecondMappedTypeInfo Add(Type type)
+        private MappedTypeInfo Add(Type type)
         {
-            var mappedTypeInfo = new SecondMappedTypeInfo();
+            var mappedTypeInfo = new MappedTypeInfo();
             mappedTypeInfo.PrimaryKey = GetPrimaryKey(type);
             mappedTypeInfo.Columns = GetColumns(type);
             mappedTypeInfo.TableName = GetTableName(type);
@@ -67,9 +67,9 @@ namespace Frog.Orm
             return result.ToList();
         }
 
-        public SecondMappedTypeInfo GetTypeInfo(Type type)
+        public MappedTypeInfo GetTypeInfo(Type type)
         {
-            SecondMappedTypeInfo mappedTypeInfo;
+            MappedTypeInfo mappedTypeInfo;
 
             if (!cache.TryGetValue(type, out mappedTypeInfo))
             {

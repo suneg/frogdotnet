@@ -1,4 +1,5 @@
 using System;
+using Frog.Orm.Conditions;
 using Frog.Orm.Syntax;
 
 namespace Frog.Orm.Dialects
@@ -10,10 +11,18 @@ namespace Frog.Orm.Dialects
             return "SELECT last_insert_rowid()";
         }
 
-        public override string Select(string tableName, FieldList list)
+        public override string SelectWhere(string tableName, FieldList list, ICondition condition, Order order)
         {
             var columnList = String.Join(",", list.Fields);
-            return String.Format("SELECT {0} FROM [{1}]", columnList, tableName);
+            var statement = String.Format("SELECT {0} FROM [{1}]", columnList, tableName);
+
+            if (condition != null)
+                statement += String.Format(" WHERE {0}", GetWhereClause(condition));
+
+            if (order != null)
+                statement += String.Format(" ORDER BY {0}", GetOrderClause(order));
+
+            return statement;
         }
 
         protected override string MapValueToSql(object value)

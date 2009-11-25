@@ -82,7 +82,7 @@ namespace Frog.Orm
             CreateFast(instance, typeInfo);
         }
 
-        private void CreateFast(object instance, SecondMappedTypeInfo typeInfo)
+        private void CreateFast(object instance, MappedTypeInfo typeInfo)
         {
             var values = mapper.GetInstanceValues(instance);
 
@@ -187,7 +187,7 @@ namespace Frog.Orm
             return ExecuteScalar(commandText);
         }
 
-        private SecondMappedTypeInfo GetTypeInfo(Type type)
+        private MappedTypeInfo GetTypeInfo(Type type)
         {
             return mapper.GetTypeInfo(type);
         }
@@ -206,7 +206,7 @@ namespace Frog.Orm
             return dataEnumerator.GetEnumerator<T>(command.ExecuteReader()).First();
         }
 
-        private static ICondition CreatePrimaryKeyCondition(SecondMappedTypeInfo typeInfo, object primaryKeyValue)
+        private static ICondition CreatePrimaryKeyCondition(MappedTypeInfo typeInfo, object primaryKeyValue)
         {
             ICondition condition;
 

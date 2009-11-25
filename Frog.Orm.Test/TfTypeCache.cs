@@ -33,7 +33,7 @@ namespace Frog.Orm.Test
         {
             var type = typeof (WithColumns);
             
-            SecondMappedTypeInfo info = typeCache.GetTypeInfo(type);
+            MappedTypeInfo info = typeCache.GetTypeInfo(type);
             Assert.That(info.Columns.Count, Is.EqualTo(2));
             Assert.That(info.Columns[0].Name, Is.EqualTo("ColumnX"));
             Assert.That(info.Columns[1].Name, Is.EqualTo("ColumnY"));
