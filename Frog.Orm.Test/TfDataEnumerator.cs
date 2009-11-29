@@ -72,6 +72,22 @@ namespace Frog.Orm.Test
             Assert.That(list[0].Name, Is.EqualTo("Edwards W. Deming"));
             Assert.That(list[0].TheSame, Is.EqualTo(mockRepository));
         }
+
+        [Test]
+        public void EnumerateRowWithDbNullValue()
+        {
+            table.AddColumn("Name", typeof(String));
+            table.AddColumn("Age", typeof(Int32));
+            table.AddRow("Edwards W. Deming", DBNull.Value);
+
+            var samples = enumerator.GetEnumerator<TwoColumns>(table.GetDataReader());
+
+            var list = samples.ToList();
+            Assert.That(list.Count, Is.EqualTo(1));
+
+            Assert.That(list[0].Name, Is.EqualTo("Edwards W. Deming"));
+            Assert.That(list[0].Age, Is.Null);
+        }
     }
 
     #region Mocked repository 
@@ -98,6 +114,16 @@ namespace Frog.Orm.Test
 
         public IRepository TheSame { set { repository = value; }get { return repository; } }
 
+    }
+
+    [Table]
+    internal class TwoColumns
+    {
+        [Column]
+        public string Name { get; set; }
+
+        [Column]
+        public int? Age { get; set; }
     }
 
     #endregion

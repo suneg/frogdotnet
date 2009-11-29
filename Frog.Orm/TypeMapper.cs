@@ -52,6 +52,9 @@ namespace Frog.Orm
 
         public static object MapDbValueToDotNet(Type targetType, object value)
         {
+            if (value is DBNull)
+                return null;
+
             if (targetType.IsEnum)
                 return Convert.ToInt32(value);
 
@@ -69,9 +72,6 @@ namespace Frog.Orm
 
             if (targetType.Equals(typeof(Boolean)))
                 return Convert.ToBoolean(value);
-
-            if (value is DBNull)
-                return null;
 
             return value;
         }
