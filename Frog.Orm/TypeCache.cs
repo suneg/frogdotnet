@@ -16,7 +16,7 @@ namespace Frog.Orm
                 cache = new Dictionary<Type, MappedTypeInfo>();
         }
 
-        private MappedTypeInfo Add(Type type)
+        private static MappedTypeInfo Add(Type type)
         {
             var mappedTypeInfo = new MappedTypeInfo();
             mappedTypeInfo.PrimaryKey = GetPrimaryKey(type);
@@ -28,7 +28,7 @@ namespace Frog.Orm
             return mappedTypeInfo;
         }
 
-        private List<PropertyInfo> GetDependencies(Type type)
+        private static List<PropertyInfo> GetDependencies(Type type)
         {
             var result = new List<PropertyInfo>();
 
@@ -42,7 +42,7 @@ namespace Frog.Orm
             return result;
         }
 
-        private string GetTableName(Type type)
+        private static string GetTableName(Type type)
         {
             var attribute = ((TableAttribute)Attribute.GetCustomAttribute(type, typeof(TableAttribute)));
 
@@ -53,12 +53,12 @@ namespace Frog.Orm
             return overriddenName ?? type.Name;
         }
 
-        private static List<SecondMappedColumnInfo> GetColumns(Type type)
+        private static List<MappedColumnInfo> GetColumns(Type type)
         {
             var result = from property in type.GetProperties()
                          where (Attribute.GetCustomAttribute(property, typeof(ColumnAttribute)) != null ||
                                   Attribute.GetCustomAttribute(property, typeof(PrimaryKeyAttribute)) != null)
-                         select new SecondMappedColumnInfo
+                         select new MappedColumnInfo
                          {
                              Name = GetColumnName(property),
                              Info = property
@@ -71,15 +71,18 @@ namespace Frog.Orm
         {
             MappedTypeInfo mappedTypeInfo;
 
-            if (!cache.TryGetValue(type, out mappedTypeInfo))
+            lock (cache)
             {
-                mappedTypeInfo = Add(type);
+                if (!cache.TryGetValue(type, out mappedTypeInfo))
+                {
+                    mappedTypeInfo = Add(type);
+                }
             }
 
             return mappedTypeInfo;
         }
 
-        private SecondMappedColumnInfo GetPrimaryKey(Type type)
+        private static MappedColumnInfo GetPrimaryKey(Type type)
         {
             var primaryKeyProperty = type.GetProperties().FirstOrDefault(c => Attribute.GetCustomAttribute(c, typeof(PrimaryKeyAttribute)) != null);
 
@@ -88,7 +91,7 @@ namespace Frog.Orm
 
             var overriddenName = GetAttribute<PrimaryKeyAttribute>(primaryKeyProperty).Name;
 
-            return new SecondMappedColumnInfo
+            return new MappedColumnInfo
             {
                 Name = overriddenName ?? primaryKeyProperty.Name,
                 Info = primaryKeyProperty

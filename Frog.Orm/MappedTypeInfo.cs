@@ -7,13 +7,13 @@ namespace Frog.Orm
     {
         public MappedTypeInfo()
         {
-            Columns = new List<SecondMappedColumnInfo>();
+            Columns = new List<MappedColumnInfo>();
         }
 
         public string TableName { get; set; }
         public List<PropertyInfo> Dependencies { get; set; }
-        public SecondMappedColumnInfo PrimaryKey { get; set; }
-        public List<SecondMappedColumnInfo> Columns { get; set; }        
+        public MappedColumnInfo PrimaryKey { get; set; }
+        public List<MappedColumnInfo> Columns { get; set; }        
 
         public bool HasPrimaryKey()
         {
