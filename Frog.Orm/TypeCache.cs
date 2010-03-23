@@ -8,12 +8,18 @@ namespace Frog.Orm
 {
     public class TypeCache
     {
-        private static Dictionary<Type, MappedTypeInfo> cache;
+        private static readonly Dictionary<Type, MappedTypeInfo> cache = new Dictionary<Type, MappedTypeInfo>();
+
+        // Explicit static constructor to tell C# compiler
+        // not to mark type as beforefieldinit
+        static TypeCache()
+        {
+            
+        }
 
         public TypeCache()
         {
-            if(cache == null)
-                cache = new Dictionary<Type, MappedTypeInfo>();
+            
         }
 
         private static MappedTypeInfo Add(Type type)
@@ -71,6 +77,7 @@ namespace Frog.Orm
         {
             MappedTypeInfo mappedTypeInfo;
 
+            // TODO: I would like to use double-checked locking, but it seems that it is not recommended!?
             lock (cache)
             {
                 if (!cache.TryGetValue(type, out mappedTypeInfo))
