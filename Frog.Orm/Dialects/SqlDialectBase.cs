@@ -144,6 +144,14 @@ namespace Frog.Orm.Dialects
                 return String.Format("([{0}] = {1})", clause.Column, MapValueToSql(clause.Value));
             }
 
+            if (condition is InCondition)
+            {
+                var clause = (condition as InCondition);
+                var values = clause.Value as object[];
+                var valueList = string.Join(", ", values.Select(v => MapValueToSql(v)).ToArray());
+                return String.Format("([{0}] IN ({1})", clause.Column, valueList);
+            }
+
             if(condition is StartsWithCondition)
             {
                 var clause = (condition as StartsWithCondition);

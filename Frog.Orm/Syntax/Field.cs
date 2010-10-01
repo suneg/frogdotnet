@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Frog.Orm.Conditions;
 
 namespace Frog.Orm.Syntax
@@ -23,6 +25,16 @@ namespace Frog.Orm.Syntax
         public static ICondition Equals(string column, DateTime value)
         {
             throw new NotImplementedException();
+        }
+
+        public static ICondition In(string column, string[] values)
+        {
+            return new InCondition(column, values);
+        }
+
+        public static ICondition In(string column, long[] values)
+        {
+            return new InCondition(column, values.Select(v => v as object).ToArray());
         }
 
         public static ICondition Contains(string column, string value)
