@@ -74,7 +74,7 @@ namespace Frog.Orm.Test
         {
             Assert.That(
                 factory.SelectWhere("table", Field.List("Name", "Value"), Field.In("column", new[] {"t1","t2"})),
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] IN ('t1', 't2')"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] IN ('t1', 't2'))"));
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Frog.Orm.Test
         {
             Assert.That(
                 factory.SelectWhere("table", Field.List("Name", "Value"), Field.In("column", new[] { 1L,2L })),
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] IN (1, 2)"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] IN (1, 2))"));
         }
 
 

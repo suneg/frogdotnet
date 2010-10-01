@@ -149,7 +149,7 @@ namespace Frog.Orm.Dialects
                 var clause = (condition as InCondition);
                 var values = clause.Value as object[];
                 var valueList = string.Join(", ", values.Select(v => MapValueToSql(v)).ToArray());
-                return String.Format("([{0}] IN ({1})", clause.Column, valueList);
+                return String.Format("([{0}] IN ({1}))", clause.Column, valueList);
             }
 
             if(condition is StartsWithCondition)
