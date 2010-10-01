@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frog.Orm", "Frog.Orm\Frog.Orm.csproj", "{09D00F68-135B-47C5-8B97-0F92C964CA1C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frog.Orm.Test", "Frog.Orm.Test\Frog.Orm.Test.csproj", "{EA6B821B-A483-4175-BC84-5091B3FF03C3}"
