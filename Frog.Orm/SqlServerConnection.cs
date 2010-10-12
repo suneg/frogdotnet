@@ -45,8 +45,11 @@ namespace Frog.Orm
         /// </summary>
         public void Rollback()
         {
-            currentTransaction.Rollback();   // TODO: Fail if no transaction is running
-            currentTransaction = null;
+            if (currentTransaction != null)
+            {
+                currentTransaction.Rollback();
+                currentTransaction = null;
+            }
         }
 
         /// <summary>
@@ -54,8 +57,11 @@ namespace Frog.Orm
         /// </summary>
         public void CommitChanges()
         {
-            currentTransaction.Commit();     // TODO: Fail if no transaction is running
-            currentTransaction = null;
+            if (currentTransaction != null)
+            {
+                currentTransaction.Commit();
+                currentTransaction = null;
+            }
         }
 
         /// <summary>
