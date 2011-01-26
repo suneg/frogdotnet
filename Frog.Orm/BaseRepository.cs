@@ -151,6 +151,16 @@ namespace Frog.Orm
         }
 
         /// <summary>
+        /// Executes an non-query SQL statement.
+        /// </summary>
+        /// <param name="rawSqlStatement">Actual SQL statement to be executed against the underlying database</param>
+        protected void ExecuteRawSql(string rawSqlStatement)
+        {
+            Transaction.ExecuteRaw(rawSqlStatement);
+        }
+
+
+        /// <summary>
         /// Executes a statement that produces a single-cell result.
         /// </summary>
         /// <param name="scalarExpression"></param>
