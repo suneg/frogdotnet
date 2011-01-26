@@ -62,6 +62,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\System.Data.SQLite.DLL</HintPath>
     </Reference>
+    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\Lib\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -84,6 +87,8 @@
     <Compile Include="Conditions\EndsWithCondition.cs" />
     <Compile Include="Conditions\StartsWithCondition.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="Dialects\SqlCeDialect.cs" />
+    <Compile Include="SqlServerCeConnection.cs" />
     <Compile Include="IScalarExpression.cs" />
     <Compile Include="Scalar.cs" />
     <Compile Include="Syntax\Field.cs" />
