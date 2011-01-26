@@ -41,6 +41,7 @@
       <copy todir="Drop">
         <fileset basedir="Lib">
           <include name="System.Data.SQLite.dll" />
+          <include name="System.Data.SqlServerCe.dll" />          
         </fileset>
       </copy>
     </if>
@@ -50,6 +51,7 @@
       <references>
         <include name="Lib\log4net.dll" />
         <include name="Drop\System.Data.SQLite.dll" />
+        <include name="Drop\System.Data.SqlServerCe.dll" />
       </references>
       <sources>
         <include name="Frog.Orm\**.cs" />
@@ -63,6 +65,7 @@
         <include name="Drop\Rhino.Mocks.dll" />
         <include name="Drop\Frog.Orm.dll" />
         <include name="Drop\System.Data.SQLite.dll" />
+        <include name="Drop\System.Data.SqlServerCe.dll" />
       </references>
       <sources>
         <include name="Frog.Orm.Test\**.cs" />
@@ -83,6 +86,7 @@
         <include name="**/Frog.Orm.dll" />
         <include name="**/log4net.dll" />
         <include name="**/System.Data.SQLite.dll" />
+        <include name="**/System.Data.SqlServerCe.dll" />
       </fileset>
       <fileset basedir="Documentation" prefix="doc">
         <include name="**/*" />
