@@ -4,7 +4,7 @@ using System.Data;
 using Frog.Orm.Conditions;
 using NUnit.Framework;
 using System.Linq;
-using Is=NUnit.Framework.SyntaxHelpers.Is;
+using Is=NUnit.Framework.Is;
 
 namespace Frog.Orm.Test
 {

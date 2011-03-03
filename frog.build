@@ -2,7 +2,7 @@
 <project xmlns="http://nant.sf.net/release/0.86-beta1/nant.xsd" name="Syntase Wizer" default="build" basedir=".">
   <description>Frog.NET build script</description>
   <property name="debug" value="true" overwrite="false" />
-  <property name="nant.settings.currentframework" value="net-3.5"/>
+  <property name="nant.settings.currentframework" value="net-4.0"/>
   <property name="target.architecture" value="x86"/>
 
   <target name="clean" description="remove all generated files">
@@ -71,12 +71,15 @@
         <include name="Frog.Orm.Test\**.cs" />
       </sources>
     </csc>
+	
+	  <copy todir="Drop" file="Frog.Orm.Test\App.config" />
+		
   </target>
 
   <target name="test">
-    <nunit2 verbose="true" failonerror="true">
+    <nunit2 verbose="false" failonerror="true">
       <formatter type="Plain" />
-      <test assemblyname="Drop\Frog.Orm.Test.dll"/>
+      <test assemblyname="Drop\Frog.Orm.Test.dll" appconfig="app.config"/>
     </nunit2>
   </target>
 

@@ -3,7 +3,6 @@ using Frog.Orm.Conditions;
 using Frog.Orm.Dialects;
 using Frog.Orm.Syntax;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 using Rhino.Mocks;
 using System.Linq;
 
@@ -100,17 +99,20 @@ namespace Frog.Orm.Test
             Assert.That(created.Id, Is.EqualTo(14));
         }
 
-        [Test, ExpectedException(ExceptionType = typeof(InvalidRowCountException))]
+        [Test]
         public void StoreNewInstanceFails()
         {
-            var person = new Person { Name = "Sune" };
+			Assert.Throws(typeof(InvalidRowCountException), delegate()
+            {
+				var person = new Person { Name = "Sune" };
 
-            Expect.Call(command.CommandText).SetPropertyWithArgument("INSERT INTO [People]([Name]) VALUES('Sune')");
-            Expect.Call(command.ExecuteNonQuery()).Return(0);
+				Expect.Call(command.CommandText).SetPropertyWithArgument("INSERT INTO [People]([Name]) VALUES('Sune')");
+				Expect.Call(command.ExecuteNonQuery()).Return(0);
 
-            mocks.ReplayAll();
-            var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
-            transaction.Create(person);
+				mocks.ReplayAll();
+				var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
+				transaction.Create(person);
+			});
         }
 
         [Test]
@@ -127,32 +129,38 @@ namespace Frog.Orm.Test
             transaction.Delete(person);
         }
 
-        [Test, ExpectedException(ExceptionType = typeof(InvalidRowCountException))]
+        [Test]
         public void DeleteMissingInstanceFails()
         {
-            var person = new Person {Id = 5, Name = "Sune"};
+			Assert.Throws(typeof(InvalidRowCountException), delegate()
+            {
+				var person = new Person {Id = 5, Name = "Sune"};
 
-            Expect.Call(command.CommandText).SetPropertyWithArgument("DELETE FROM [People] WHERE ([Id] = 5)");
-            Expect.Call(command.ExecuteNonQuery()).Return(0);
+				Expect.Call(command.CommandText).SetPropertyWithArgument("DELETE FROM [People] WHERE ([Id] = 5)");
+				Expect.Call(command.ExecuteNonQuery()).Return(0);
 
-            mocks.ReplayAll();
+				mocks.ReplayAll();
 
-            var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
-            transaction.Delete(person);
+				var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
+				transaction.Delete(person);
+			});
         }
 
-        [Test, ExpectedException(ExceptionType = typeof(InvalidRowCountException))]
+        [Test]
         public void UpdateMissingInstanceFails()
         {
-            var person = new Person { Id = 5, Name = "Sune" };
+			Assert.Throws(typeof(InvalidRowCountException), delegate()
+            {
+				var person = new Person { Id = 5, Name = "Sune" };
 
-            Expect.Call(command.CommandText).SetPropertyWithArgument("UPDATE [People] SET [Name] = 'Sune' WHERE ([Id] = 5)");
-            Expect.Call(command.ExecuteNonQuery()).Return(0);
+				Expect.Call(command.CommandText).SetPropertyWithArgument("UPDATE [People] SET [Name] = 'Sune' WHERE ([Id] = 5)");
+				Expect.Call(command.ExecuteNonQuery()).Return(0);
 
-            mocks.ReplayAll();
+				mocks.ReplayAll();
 
-            var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
-            transaction.Update(person);
+				var transaction = new Transaction(dbTransaction, new TransactSqlDialect(), enumerator);
+				transaction.Update(person);
+			});
         }
 
         [Test]

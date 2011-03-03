@@ -2,7 +2,6 @@
 using System.Linq;
 using Frog.Orm.Conditions;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Frog.Orm.Test
 {

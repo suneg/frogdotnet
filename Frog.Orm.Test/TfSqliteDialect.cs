@@ -1,7 +1,6 @@
 ﻿using Frog.Orm.Dialects;
 using Frog.Orm.Syntax;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Frog.Orm.Test
 {

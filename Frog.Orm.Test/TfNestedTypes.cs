@@ -5,7 +5,6 @@ using System.Linq;
 using Frog.Orm.Syntax;
 using Frog.Orm.Test;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Frog.Orm.Test
 {
