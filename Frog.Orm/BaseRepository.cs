@@ -11,6 +11,17 @@ namespace Frog.Orm
         protected BaseRepository(IConnection connection)
         {
             this.connection = connection;
+            InitDataEnumerator();
+        }
+
+        protected void InitDataEnumerator()
+        {
+            if(connection.DataEnumerator == null)
+            {
+                connection.DataEnumerator = new NullDataEnumerator();
+                connection.DataEnumerator = new DataEnumerator(new Repository(connection));
+            }
+                
         }
 
         /// <summary>

@@ -6,10 +6,7 @@ namespace Frog.Orm
 {
     public class Repository : BaseRepository, IRepository
     {
-        public Repository(IConnection connection) : base(connection)
-        {
-            connection.DataEnumerator = new DataEnumerator(this);            
-        }
+        public Repository(IConnection connection) : base(connection) { }
 
         public new T Get<T>(long primaryKeyValue)
         {

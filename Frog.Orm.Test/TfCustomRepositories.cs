@@ -48,9 +48,24 @@ namespace Frog.Orm.Test
                 Assert.That(sample.Id, Is.EqualTo(1));
             }
         }
+
+        [Test, Description("If a custom repository did not provide an IRepository for initializing the DataEnumerator on the connection, problems would occur. Fixed by moving initialization to BaseRepository")]
+        public void TestDefectNonAutoInitOfDataEnumerator()
+        {
+            using (connection)
+            {
+                var repository = new TestRepository(connection);
+
+                repository.Create<Sample>("test", 5);
+
+                var res = repository.Search("test").Select(p => p.Id).ToArray();
+                Assert.That(res, Is.EqualTo(new long[] { 1, 2, 3, 4 }));
+
+            }
+        }
     }
 
-    internal class TestRepository : Repository
+    internal class TestRepository : BaseRepository
     {
         public TestRepository(IConnection connection) : base(connection)
         {
@@ -66,5 +81,17 @@ namespace Frog.Orm.Test
         {
             return base.GetSingle<T>(sourceName, condition);
         }
+
+        public Sample Create<T>(string a, int asdf)
+        {
+            return Create<Sample>(new Sample());
+        }
+
+        public IEnumerable<Sample> Search(string searchPattern)
+        {
+            return base.GetAll<Sample>();
+        }
     }
+
+    
 }

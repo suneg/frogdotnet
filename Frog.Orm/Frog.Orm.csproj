@@ -88,6 +88,7 @@
     <Compile Include="Conditions\StartsWithCondition.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Dialects\SqlCeDialect.cs" />
+    <Compile Include="NullDataEnumerator.cs" />
     <Compile Include="SqlServerCeConnection.cs" />
     <Compile Include="IScalarExpression.cs" />
     <Compile Include="Scalar.cs" />
