@@ -1,0 +1,50 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Frog.NET</title>
+        
+        <link rel="Stylesheet" href="style.css" type="text/css" />
+    </head>
+
+    <body>
+        <table class="navbar">
+            <tr>
+                <td>Frog.NET</td>
+                <td align="right">v0.3</td>
+            </tr>
+        </table>
+
+        <div id="logoContainer"><img src="frog.jpg" id="logo" /></div>
+
+        <div id="mainText">
+            <br />
+            <a href="index.html">Main</a>
+            
+            <h1>Repositories</h1>
+            
+            <h3>Introduction</h3>
+            
+            <h3>Custom Repositories</h3>
+            You are highly recommended to build your own custom repositories, based on the generic<br />
+            Repository class. This allows for a much smoother and useful interface in your application,<br />
+            as well as hiding irrelevant implementation details.
+            
+            <br />
+            <!-- code formatted by http://manoli.net/csharpformat/ -->
+            <div class="csharpcode">
+            <pre><span class="lnum">   1:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> OrderRepository : Repository</pre>
+            <pre><span class="lnum">   2:  </span>{</pre>
+            <pre><span class="lnum">   3:  </span>    <span class="kwrd">public</span> IEnumerable&lt;Book&gt; GetTop5BestSellingBooksThisYear()</pre>
+            <pre><span class="lnum">   4:  </span>    {</pre>
+            <pre><span class="lnum">   5:  </span>        return <span class="kwrd">base</span>.GetMany&lt;Book&gt;("Top5SellingBooks", Field.Equals("Year", DateTime.Now.Year));</pre>
+            <pre><span class="lnum">   6:  </span>    }</pre>
+            <pre><span class="lnum">   7:  </span>}</pre>
+            </div>
+            
+            
+        </div>
+        
+        <div class="footer">
+        Frog.NET 
+        </div>
+    </body>
+</html>
