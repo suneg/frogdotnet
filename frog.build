@@ -46,7 +46,6 @@
       </copy>
     </if>
 
-
     <csc target="library" output="Drop\Frog.Orm.dll" debug="${debug}" keyfile="frog.snk">
       <references>
         <include name="Lib\log4net.dll" />
