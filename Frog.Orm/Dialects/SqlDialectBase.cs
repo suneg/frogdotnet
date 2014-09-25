@@ -155,19 +155,19 @@ namespace Frog.Orm.Dialects
             if(condition is StartsWithCondition)
             {
                 var clause = (condition as StartsWithCondition);
-                return String.Format("([{0}] LIKE '{1}%')", clause.Column, Escape(clause.Value.ToString()));
+                return String.Format("([{0}] LIKE {1})", clause.Column, MapValueToSql(clause.Value.ToString() + "%"));
             }
 
             if(condition is EndsWithCondition)
             {
                 var clause = (condition as EndsWithCondition);
-                return String.Format("([{0}] LIKE '%{1}')", clause.Column, Escape(clause.Value.ToString()));
+                return String.Format("([{0}] LIKE {1})", clause.Column, MapValueToSql("%" + clause.Value.ToString()));
             }
 
             if (condition is ContainsCondition)
             {
                 var clause = (condition as ContainsCondition);
-                return String.Format("([{0}] LIKE '%{1}%')", clause.Column, Escape(clause.Value.ToString()));
+                return String.Format("([{0}] LIKE {1})", clause.Column, MapValueToSql("%" + clause.Value.ToString() + "%"));
             }
 
             if(condition is AndCondition)

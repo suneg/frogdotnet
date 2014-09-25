@@ -45,7 +45,7 @@ namespace Frog.Orm.Test
         {
             Assert.That(
                 factory.SelectWhere("table", Field.List("Name", "Value"), Field.Equals("column", "test")),
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] = 'test')"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] = N'test')"));
         }
 
         [Test, Ignore("Not Implemented yet")]
@@ -73,7 +73,7 @@ namespace Frog.Orm.Test
         {
             Assert.That(
                 factory.SelectWhere("table", Field.List("Name", "Value"), Field.In("column", new[] {"t1","t2"})),
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] IN ('t1', 't2'))"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] IN (N't1', N't2'))"));
         }
 
         [Test]
@@ -90,7 +90,7 @@ namespace Frog.Orm.Test
         {
             Assert.That(
                 factory.SelectWhere("table", Field.List("Name", "Value"), Field.StartsWith("column", "test")),
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] LIKE 'test%')"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] LIKE N'test%')"));
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace Frog.Orm.Test
         {
             Assert.That(
                 factory.SelectWhere("table", Field.List("Name", "Value"), Field.EndsWith("column", "test")),
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] LIKE '%test')"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE ([column] LIKE N'%test')"));
         }
 
         [Test]
@@ -111,7 +111,7 @@ namespace Frog.Orm.Test
                                                                      Field.Contains("column2", "abc")
                                                                      )),
 
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE (([column] LIKE '%test') AND ([column2] LIKE '%abc%'))"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE (([column] LIKE N'%test') AND ([column2] LIKE N'%abc%'))"));
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace Frog.Orm.Test
                                                                               Field.StartsWith("col", "abc"),
                                                                               Field.EndsWith("col2", "xyz")
                                                                               )),
-                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE (([col] LIKE 'abc%') OR ([col2] LIKE '%xyz'))"));
+                Is.EqualTo("SELECT [Name],[Value] FROM [table] WHERE (([col] LIKE N'abc%') OR ([col2] LIKE N'%xyz'))"));
         }
 
         [Test]
@@ -179,7 +179,7 @@ namespace Frog.Orm.Test
 
             Assert.That(
                 factory.UpdateWhere("table", Field.Equals("Id", 7), collection),
-                Is.EqualTo("UPDATE [table] SET [Name] = 'John', [City] = 'Copenhagen' WHERE ([Id] = 7)"));
+                Is.EqualTo("UPDATE [table] SET [Name] = N'John', [City] = N'Copenhagen' WHERE ([Id] = 7)"));
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace Frog.Orm.Test
 
             Assert.That(
                 factory.UpdateWhere("People", Field.Equals("Id", 7), collection),
-                Is.EqualTo("UPDATE [People] SET [Name] = 'John', [DateOfBirth] = '1980-12-25 00:00:00.000', [PomodorosCompleted] = 101 WHERE ([Id] = 7)"));
+                Is.EqualTo("UPDATE [People] SET [Name] = N'John', [DateOfBirth] = '1980-12-25 00:00:00.000', [PomodorosCompleted] = 101 WHERE ([Id] = 7)"));
         }
 
         [Test]
@@ -205,7 +205,7 @@ namespace Frog.Orm.Test
 
             Assert.That(
                 factory.Insert("People", collection),
-                Is.EqualTo("INSERT INTO [People]([Name],[DateOfBirth],[PomodorosCompleted]) VALUES('John','1980-12-25 00:00:00.000',101)"));
+                Is.EqualTo("INSERT INTO [People]([Name],[DateOfBirth],[PomodorosCompleted]) VALUES(N'John','1980-12-25 00:00:00.000',101)"));
         }
 
         [Test]
@@ -216,7 +216,7 @@ namespace Frog.Orm.Test
 
             Assert.That(
                 factory.Update("People", collection),
-                Is.EqualTo("UPDATE [People] SET [Name] = 'ABC ^~''*''| // || \\\\ ? +=(){}%&¤#\" <>'"));
+                Is.EqualTo("UPDATE [People] SET [Name] = N'ABC ^~''*''| // || \\\\ ? +=(){}%&¤#\" <>'"));
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace Frog.Orm.Test
 
             Assert.That(
                 factory.Insert("People", collection),
-                Is.EqualTo("INSERT INTO [People]([Name]) VALUES('ABC ^~''*''| // || \\\\ ? +=(){}%&¤#\" <>')"));
+                Is.EqualTo("INSERT INTO [People]([Name]) VALUES(N'ABC ^~''*''| // || \\\\ ? +=(){}%&¤#\" <>')"));
         }
 
         [Test]
@@ -263,21 +263,21 @@ namespace Frog.Orm.Test
             IScalarExpression expression = Scalar.Average("Age", "People");
             expression.Condition = Field.Equals("Gender", "Male");
 
-            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT AVG([Age]) FROM [People] WHERE ([Gender] = 'Male')"));
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT AVG([Age]) FROM [People] WHERE ([Gender] = N'Male')"));
         }
 
         [Test]
         public void GetSumWithCondition()
         {
             var expression = Scalar.Sum("Age", "People", Field.Equals("Gender", "Female"));
-            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT SUM([Age]) FROM [People] WHERE ([Gender] = 'Female')"));
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT SUM([Age]) FROM [People] WHERE ([Gender] = N'Female')"));
         }
 
         [Test]
         public void GetCountWithCondition()
         {
             IScalarExpression expression = Scalar.Count("Entity", Field.Equals("Gender", "Unknown"));
-            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT COUNT(*) FROM [Entity] WHERE ([Gender] = 'Unknown')"));
+            Assert.That(factory.SelectScalar(expression), Is.EqualTo("SELECT COUNT(*) FROM [Entity] WHERE ([Gender] = N'Unknown')"));
         }
     }
 }

@@ -54,6 +54,27 @@ namespace Frog.Orm.Test
         }
 
         [Test]
+        public void SupportUnicode()
+        {
+            var entity = new Entity { Text = "hello ٩(͡๏̯͡๏)۶ ٩(-̮̮̃•̃)." };
+            var repository = new Repository(connection);
+            var returnedObject = repository.Create(entity);
+            connection.CommitChanges();
+
+            var storedEntity = repository.Get<Entity>(returnedObject.Id);
+            Assert.That(storedEntity.Text, Is.EqualTo("hello ٩(͡๏̯͡๏)۶ ٩(-̮̮̃•̃)."));
+
+            returnedObject.Text = "hey ٩(͡๏̯͡๏)۶ ٩(-̮̮̃•̃).";
+            repository.Update(returnedObject);
+
+            var updatedObject = repository.Get<Entity>(returnedObject.Id);
+            Assert.That(updatedObject.Text, Is.EqualTo("hey ٩(͡๏̯͡๏)۶ ٩(-̮̮̃•̃)."));
+
+            var foundObject = repository.GetWhere<Entity>(Field.Equals("Text", "hey ٩(͡๏̯͡๏)۶ ٩(-̮̮̃•̃).")).Single();
+            Assert.That(foundObject.Id, Is.EqualTo(updatedObject.Id));
+        }
+
+        [Test]
         public void RemoveInstance()
         {
             var entity = new Entity();

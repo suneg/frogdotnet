@@ -81,7 +81,7 @@ namespace Frog.Orm.Test
         {
             var person = new Person {Name = "Sune"};
 
-            Expect.Call(command.CommandText).SetPropertyWithArgument("INSERT INTO [People]([Name]) VALUES('Sune')");
+            Expect.Call(command.CommandText).SetPropertyWithArgument("INSERT INTO [People]([Name]) VALUES(N'Sune')");
             Expect.Call(command.ExecuteNonQuery()).Return(1);
 
             Expect.Call(connection.CreateCommand()).Return(command);
@@ -106,7 +106,7 @@ namespace Frog.Orm.Test
             {
 				var person = new Person { Name = "Sune" };
 
-				Expect.Call(command.CommandText).SetPropertyWithArgument("INSERT INTO [People]([Name]) VALUES('Sune')");
+				Expect.Call(command.CommandText).SetPropertyWithArgument("INSERT INTO [People]([Name]) VALUES(N'Sune')");
 				Expect.Call(command.ExecuteNonQuery()).Return(0);
 
 				mocks.ReplayAll();
@@ -153,7 +153,7 @@ namespace Frog.Orm.Test
             {
 				var person = new Person { Id = 5, Name = "Sune" };
 
-				Expect.Call(command.CommandText).SetPropertyWithArgument("UPDATE [People] SET [Name] = 'Sune' WHERE ([Id] = 5)");
+				Expect.Call(command.CommandText).SetPropertyWithArgument("UPDATE [People] SET [Name] = N'Sune' WHERE ([Id] = 5)");
 				Expect.Call(command.ExecuteNonQuery()).Return(0);
 
 				mocks.ReplayAll();
