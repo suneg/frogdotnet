@@ -1,0 +1,4 @@
+Requires:
+  NUnit : 2.6.3
+  SQLite : 2.0.1
+  Log4net : 1.45.0
