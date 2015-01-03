@@ -2,7 +2,7 @@
 
 namespace Frog.Orm.Test.SqlServer
 {
-    [TestFixture, Category("SQLite")]
+    [TestFixture, Category("SqlServer")]
     public class TfSqlServerWrite : DatabaseWriteTests
     {
         private SchemaBuilder builder;

@@ -1,5 +1,3 @@
-type: test
-
 dependencies:
   Frog.Orm
 
@@ -7,3 +5,4 @@ requires:
   NUnit : 2.6.3
   RhinoMocks : 3.6.1
   System.Data.SQLite.Core : 1.0.94.0
+  Log4net : 2.0.0

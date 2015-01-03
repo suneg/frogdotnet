@@ -18,12 +18,6 @@ namespace Frog.Orm
             dialect = new SqliteDialect();
         }
 
-        public SqliteConnection(SQLiteConnection connection)
-        {
-            this.connection = connection;
-            dialect = new SqliteDialect();
-        }
-
         public void Dispose()
         {
             if (currentTransaction != null)
