@@ -15,6 +15,7 @@ namespace Frog.Orm
         {
             connection = new SqlConnection(connectionString);
             dialect = new TransactSqlDialect();
+            IsolationLevel = IsolationLevel.Unspecified;
         }
 
         public void Dispose()
@@ -36,7 +37,7 @@ namespace Frog.Orm
             if(connection.State == ConnectionState.Closed)
                 connection.Open();
 
-            currentTransaction = new Transaction(connection.BeginTransaction(), Dialect, DataEnumerator);
+            currentTransaction = new Transaction(connection.BeginTransaction(IsolationLevel), Dialect, DataEnumerator);
             return currentTransaction;
         }
 
@@ -97,5 +98,10 @@ namespace Frog.Orm
                     currentTransaction.InitializeDataEnumerator(dataEnumerator);
             }
         }
+
+        /// <summary>
+        /// Sets or gets the isolation level for the next transaction. Is Unspecified by default using the SQLServer default
+        /// </summary>
+        public IsolationLevel IsolationLevel { get; set; }
     }
 }

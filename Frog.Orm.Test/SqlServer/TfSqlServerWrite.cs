@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System.Data;
 
 namespace Frog.Orm.Test.SqlServer
 {
@@ -42,5 +43,22 @@ namespace Frog.Orm.Test.SqlServer
                 repository.Create(instance);
             }
         }
+
+        public void IsolationLevel_set()
+        {
+            var entity = new Entity();
+            var repository = new Repository(connection);
+            entity = repository.Create(entity);
+            connection.CommitChanges();
+
+            (connection as SqlServerConnection).IsolationLevel = IsolationLevel.Serializable;
+            entity.Text = "hello everyone";
+            repository.Update(entity);
+            connection.CommitChanges();
+
+            var updatedObject = repository.Get<Entity>(entity.Id);
+            Assert.That(updatedObject.Text, Is.EqualTo("hello everyone"));
+        }
+
     }
 }
